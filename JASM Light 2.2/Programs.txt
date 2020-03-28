@@ -1,0 +1,166 @@
+JASM Light 2.2.0
+ 
+Started: 05/15/19
+Last worked on: 02/20/20
+ 
+Sub-routine simulator:
+ 
+00 JMP
+01 ADDRESS --------- Program start
+02 WTA ------------- Start sub-routine
+03 0F
+04 RDA
+05 0D
+06 INA
+07 00
+08 WTC
+09 0D
+0A WTC
+0B 11
+0C WTB
+0D 1D
+0E JMP
+0F 00
+10 RDA ------------- End sub-routine
+11 1D
+12 WTA
+13 1D
+14 RDA
+15 0D
+16 DCA
+17 00
+18 WTC
+19 0D
+1A WTC
+1B 11
+1C JMP
+1D 00
+1E 00 ------------- Sub-routine return addresses (emulated stack)
+...
+2D 00
+ 
+ 
+19
+46
+05
+15
+03
+13
+12
+00
+07
+13
+07
+17
+06
+29
+19
+00
+03
+29
+05
+29
+03
+13
+13
+00
+07
+13
+07
+17
+19
+00
+ 
+ 
+ 
+Fibonacci (stored in RAM):
+ 
+00:  STA
+01: 01
+02:  STB
+03: 01
+04:  ADD
+05: 00
+06:  WRB
+07: 16
+08:  MCB
+09: 00
+10:  RDA
+11: 07
+12:  INA
+13: 00
+14:  WRC
+15: 07
+16:  RDA
+17: 16
+18:  WRC
+19: 11
+20:  JMP
+21: 04
+ 
+ 
+01
+01
+02
+01
+10
+00
+06
+22
+09
+00
+03
+07
+14
+00
+07
+07
+03
+22
+07
+17
+16
+04
+ 
+ 
+ 
+Fibonacci: (Outputted)
+ 
+00:  STA
+01: 01
+02:  STB
+03: 00
+04:  ADD
+05: 00
+06:  OTC
+07: 00
+08:  MCB
+09: 00
+10:  ADD
+11: 00
+12:  OTC
+13: 00
+14:  MCA
+15: 00
+16:  JMP
+17: 04
+ 
+ 
+01
+01
+02
+00
+10
+00
+17
+00
+09
+00
+10
+00
+17
+00
+08
+00
+19
+04

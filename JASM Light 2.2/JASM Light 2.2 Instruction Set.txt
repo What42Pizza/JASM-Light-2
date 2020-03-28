@@ -1,0 +1,74 @@
+JASM Light 2.2.0
+ 
+Started: 05/15/19
+Last worked on: 02/20/20
+ 
+ 
+ 
+00 NOP ---   No operation.
+01 STA num   Sets register A to "num".
+02 STB num   Sets register B to "num".
+03 RDA add   Reads from memory "add" to register A.
+04 RDB add   Reads from memory "add" to register B.
+05 WTA add   Writes register A to memory "add".
+06 WTB add   Writes register B to memory "add".
+07 WTC add   Writes register C to memory "add".
+08 MCA ---   Moves register C to register A.
+09 MCB ---   Moves register C to register B.
+10 ADD ---   Sets register C to register A + register B.
+11 SUB ---   Sets register C to register A - register B.
+12 INA ---   Sets register C to register A incremented by 1.
+13 DCA ---   Sets register C to register A decremented by 1.
+14 SLA ---   Sets register C to register A shifted left by 1.
+15 AND ---   Sets register C to register A bitwise and register B.
+16 OUT add   Sets the IO register to memory "add".
+17 OTC ---   Sets the IO register to register C.
+18 INP add   Sets momory "add" to the IO register.
+19 JMP add   Jumps to "add".
+20 JPE add   Jumps to "add" if register A = register B.
+21 JPG add   Jumps to "add" if register A < register B.
+22 JPL add   Jumps to "add" if register A > register B.
+23 STP ---   Stops execution.
+ 
+ 
+ 
+Every instruction takes either one or two memory addresses. The first address is used for the
+instruction, and the second address is used for the instruction's data. For example, this
+is what you would use for STA 0A:
+01
+10
+
+If you wanted to call ADD then MCA then you could just do
+10
+08
+because both of those instructions use just one byte. If you make a computer using this language, it doesn't have to have either one
+or two address spaces and always have two. When you write code, you can give every instruction two address spaces if you want. This
+will insure compatability, but it will also be even less efficient on computers that do use varying space instructions. If you want to
+have code that takes advantage of both systems, you can use this code:
+00: 00
+01: 19
+02: 06
+03: 00
+04: 19
+05: TWO SPACES START ADDRESS HERE
+06: VARYING SPACE CODE STARTS HERE
+
+Here's what that code looks like to a computer with varying space instructions:
+00: 00 NOP
+01: 19 JMP 06
+02: 06 --
+03: 00 --
+04: 19 --
+05: TWO SPACES START ADDRESS HERE
+06: VARYING SPACE CODE STARTS HERE (runs this code)
+
+Here's what it looks like to a computer with two space instructions:
+00: 00 NOP
+01: 19 --
+02: 06 WTB 00 (does nothing)
+03: 00
+04: 19 JMP (jumps to two space code)
+05: TWO SPACES START ADDRESS HERE
+06: VARYING SPACE CODE STARTS HERE
+
+And that's how you can write code to work with either computer type.
