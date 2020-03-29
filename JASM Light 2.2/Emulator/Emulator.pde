@@ -12,6 +12,8 @@ boolean AutoRun   = false                                 ;
 
 boolean LoadFromROMDAT = false;
 
+boolean Use2SpaceInstructions = false;
+
 
 
 
@@ -25,6 +27,7 @@ byte RegisterA ;
 byte RegisterB ;
 byte RegisterC ;
 byte IORegister;
+boolean SkipDataFlag;
 
 boolean Running = true ;
 boolean Loading = false;
@@ -117,11 +120,13 @@ void LoadAndRun() {
   
   // Loading ROM
   if (LoadFromROMDAT) {
-    RAM = loadBytes (Directory + "/ROM.dat");
+    byte[] RAMIn = loadBytes (Directory + "/ROM.dat");
+    RAM = new byte [RAMIn.length + 1];
+    arrayCopy (RAMIn, 0, RAM, 0, RAMIn.length); // src, src position, dst, dst position, length
   } else {
     String[] ROMIn = loadStrings (Directory + "/ROM.txt");
-    RAM = new byte [ROMIn.length];
-    for (int i = 0; i < RAM.length; i ++) {
+    RAM = new byte [ROMIn.length + 1];
+    for (int i = 0; i < ROMIn.length; i ++) {
       RAM [i] = (byte)(unhex (ROMIn [i]) & 0xFF);
     }
   }
@@ -159,109 +164,142 @@ void ExecuteInstruction() {
     
     
     
+    default:
+      SkipDataFlag = true;
+      break;
+    
+    
+    
     case (1): // STA
+      SkipDataFlag = false;
       RegisterA = Data;
       break;
     
     case (2): // STB
+      SkipDataFlag = false;
       RegisterB = Data;
       break;
     
     
     
     case (3): // RDA
+      SkipDataFlag = false;
       RegisterA = RAM [Data];
       break;
     
     case (4): // RDB
+      SkipDataFlag = false;
       RegisterB = RAM [Data];
       break;
     
     case (5): // WTA
+      SkipDataFlag = false;
       RAM [Data] = RegisterA;
       break;
     
     case (6): // WTB
+      SkipDataFlag = false;
       RAM [Data] = RegisterB;
       break;
     
     case (7): // WTC
+      SkipDataFlag = false;
       RAM [Data] = RegisterC;
       break;
     
     
     
     case (8): // MCA
+      SkipDataFlag = true;
       RegisterA = RegisterC;
       break;
     
     case (9): // MCB
+      SkipDataFlag = true;
       RegisterB = RegisterC;
       break;
     
     
     
     case (10): // ADD
+      SkipDataFlag = true;
       RegisterC = (byte)(RegisterA + RegisterB);
       break;
     
     case (11): // SUB
+      SkipDataFlag = true;
       RegisterC = (byte)(RegisterA - RegisterB);
       break;
     
     case (12): // INA
+      SkipDataFlag = true;
       RegisterC = (byte)(RegisterA + 1);
       break;
     
     case (13): // DCA
+      SkipDataFlag = true;
       RegisterC = (byte)(RegisterA - 1);
       break;
     
     case (14): // SLA
+      SkipDataFlag = true;
       RegisterC = (byte)(RegisterA << 1);
       break;
     
     case (15): // AND
+      SkipDataFlag = true;
       RegisterC = (byte)(RegisterA & RegisterB);
       break;
     
     case (16): // OUT
+      SkipDataFlag = false;
       byte OUTData = RAM [Data];
       println (OUTData);
       IORegister = OUTData;
       break;
     
     case (17): // OTC
+      SkipDataFlag = true;
       byte OTCData = RegisterC;
       println (OTCData);
       IORegister = OTCData;
       break;
     
+    case (18): // INP
+      SkipDataFlag = false;
+      RAM [Data] = IORegister;
+      break;
     
     
-    case (16): // JMP
+    
+    case (19): // JMP
+      SkipDataFlag = false;
       ProgramCounter = (byte)(Data - 0x02);
       break;
     
-    case (17): // JPE
+    case (20): // JPE
+      SkipDataFlag = false;
       if (RegisterA == RegisterB) {
         ProgramCounter = (byte)(Data - 0x02);
       }
       break;
     
-    case (18): // JPL
+    case (21): // JPL
+      SkipDataFlag = false;
       if (RegisterA < RegisterB) {
         ProgramCounter = (byte)(Data - 0x02);
       }
       break;
     
-    case (19): // JPG
+    case (22): // JPG
+      SkipDataFlag = false;
       if (RegisterA > RegisterB) {
         ProgramCounter = (byte)(Data - 0x02);
       }
       break;
     
     case (23): // STP
+      SkipDataFlag = true;
       Running = false;
       break;
     
@@ -269,7 +307,11 @@ void ExecuteInstruction() {
     
   }
   
-  ProgramCounter += 0x02;
+  if (SkipDataFlag & !Use2SpaceInstructions) {
+    ProgramCounter += 0x01;
+  } else {
+    ProgramCounter += 0x02;
+  }
   
 }
 
