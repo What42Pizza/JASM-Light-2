@@ -1,6 +1,6 @@
 // Started 09/15/19
 
-// Last worked on: 03/27/20
+// Last worked on: 03/30/20
 // Using JASM Light 2.2
 
 
@@ -13,6 +13,67 @@ boolean AutoRun   = false                                 ;
 boolean LoadFromROMDAT = false;
 
 boolean Use2SpaceInstructions = false;
+boolean UseHex = false;
+
+
+
+String[] InstructionNames = new String[] {
+  "NOP",
+  "STA",
+  "STB",
+  "RDA",
+  "RDB",
+  "WTA",
+  "WTB",
+  "WTC",
+  "MCA",
+  "MCB",
+  "ADD",
+  "SUB",
+  "INA",
+  "DCA",
+  "SLA",
+  "SRA",
+  "AND",
+  "OUT",
+  "OTC",
+  "INP",
+  "JMP",
+  "JPE",
+  "JPG",
+  "JPL",
+  "STP"
+};
+
+
+
+boolean[] InstructionTakesData = new boolean[] {
+  false, // NOP
+  true,  // STA
+  true,  // STB
+  true,  // RDA
+  true,  // RDB
+  true,  // WTA
+  true,  // WTB
+  true,  // WTC
+  false, // MCA
+  false, // MCB
+  false, // ADD
+  false, // SUB
+  false, // INA
+  false, // DCA
+  false, // SLA
+  false, // SRA
+  false, // AND
+  true,  // OUT
+  false, // OTC
+  true,  // INP
+  true,  // JMP
+  true,  // JPE
+  true,  // JPG
+  true,  // JPL
+  false  // STP
+};
 
 
 
@@ -76,11 +137,23 @@ void draw() {
   }
   
   // Program counter
+  byte CurrentInstruction = RAM [ProgramCounter];
   fill (0);
-  text ("PC: " + hex (ProgramCounter) + ": " + hex (RAM [ProgramCounter]), 5, 25);
+  if (UseHex) {
+    text ("PC: " + hex (ProgramCounter) + ": " + hex (CurrentInstruction), 5, 25);
+  } else {
+    text ("PC: " + ProgramCounter + ": " + RAM [ProgramCounter], 5, 25);
+  }
+  if (CurrentInstruction < InstructionNames.length) {
+    if (InstructionTakesData [CurrentInstruction]) {
+      text ("Instr: " + InstructionNames [CurrentInstruction] + " " + RAM [ProgramCounter + 1], 5, 50);
+    } else {
+      text ("Instr: " + InstructionNames [CurrentInstruction], 5, 50);
+    }
+  }
   
   // Stopped?
-  int Offset = 2;
+  int Offset = 3;
   if (!Running) {
     Offset ++;
     text ("CPU stopped", 5, 50);
@@ -89,16 +162,30 @@ void draw() {
   // RAM
   for (byte i = 0; i < RAM.length - Scroll; i ++) {
     if (i + Scroll == ProgramCounter) {
-      text (hex ((byte)(i + Scroll)) + ": " + hex (RAM[i + Scroll]) + " <--", 5, (i + Offset) * 25 + 10);
+      if (UseHex) {
+        text (hex ((byte)(i + Scroll)) + ": " + hex (RAM[i + Scroll]) + " <--", 5, (i + Offset) * 25 + 10);
+      } else {
+        text ((byte)(i + Scroll) + ": " + RAM[i + Scroll] + " <--", 5, (i + Offset) * 25 + 10);
+      }
     } else {
-      text (hex ((byte)(i + Scroll)) + ": " + hex (RAM[i + Scroll]), 5, (i + Offset) * 25 + 10);
+      if (UseHex) {
+        text (hex ((byte)(i + Scroll)) + ": " + hex (RAM[i + Scroll]), 5, (i + Offset) * 25 + 10);
+      } else {
+        text ((byte)(i + Scroll) + ": " + RAM[i + Scroll], 5, (i + Offset) * 25 + 10);
+      }
     }
   }
   
   // Registers
-  text ("Register A: " + hex (RegisterA), width / 2, 25);
-  text ("Register B: " + hex (RegisterB), width / 2, 50);
-  text ("Register C: " + hex (RegisterC), width / 2, 75);
+  if (UseHex) {
+    text ("Register A: " + hex (RegisterA), width / 2, 25);
+    text ("Register B: " + hex (RegisterB), width / 2, 50);
+    text ("Register C: " + hex (RegisterC), width / 2, 75);
+  } else {
+    text ("Register A: " + RegisterA, width / 2, 25);
+    text ("Register B: " + RegisterB, width / 2, 50);
+    text ("Register C: " + RegisterC, width / 2, 75);
+  }
   
 }
 
@@ -127,7 +214,11 @@ void LoadAndRun() {
     String[] ROMIn = loadStrings (Directory + "/ROM.txt");
     RAM = new byte [ROMIn.length + 1];
     for (int i = 0; i < ROMIn.length; i ++) {
-      RAM [i] = (byte)(unhex (ROMIn [i]) & 0xFF);
+      if (UseHex) {
+        RAM [i] = (byte)(unhex (ROMIn [i]) & 0xFF);
+      } else {
+        RAM [i] = (byte)(int (ROMIn [i]) & 0xFF);
+      }
     }
   }
   //println ("Length of ROM: " + RAM.length);
@@ -246,47 +337,45 @@ void ExecuteInstruction() {
       RegisterC = (byte)(RegisterA << 1);
       break;
     
-    case (15): // AND
+    case (15): // SRA
+      SkipDataFlag = true;
+      RegisterC = (byte)(RegisterA >> 1);
+      break;
+    
+    case (16): // AND
       SkipDataFlag = true;
       RegisterC = (byte)(RegisterA & RegisterB);
       break;
     
-    case (16): // OUT
+    case (17): // OUT
       SkipDataFlag = false;
       byte OUTData = RAM [Data];
       println (OUTData);
       IORegister = OUTData;
       break;
     
-    case (17): // OTC
+    case (18): // OTC
       SkipDataFlag = true;
       byte OTCData = RegisterC;
       println (OTCData);
       IORegister = OTCData;
       break;
     
-    case (18): // INP
+    case (19): // INP
       SkipDataFlag = false;
       RAM [Data] = IORegister;
       break;
     
     
     
-    case (19): // JMP
+    case (20): // JMP
       SkipDataFlag = false;
       ProgramCounter = (byte)(Data - 0x02);
       break;
     
-    case (20): // JPE
+    case (21): // JPE
       SkipDataFlag = false;
       if (RegisterA == RegisterB) {
-        ProgramCounter = (byte)(Data - 0x02);
-      }
-      break;
-    
-    case (21): // JPL
-      SkipDataFlag = false;
-      if (RegisterA < RegisterB) {
         ProgramCounter = (byte)(Data - 0x02);
       }
       break;
@@ -298,7 +387,14 @@ void ExecuteInstruction() {
       }
       break;
     
-    case (23): // STP
+    case (23): // JPL
+      SkipDataFlag = false;
+      if (RegisterA < RegisterB) {
+        ProgramCounter = (byte)(Data - 0x02);
+      }
+      break;
+    
+    case (24): // STP
       SkipDataFlag = true;
       Running = false;
       break;

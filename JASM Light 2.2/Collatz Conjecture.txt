@@ -1,0 +1,197 @@
+// Created 03/30/20
+
+
+
+// Starting number (auto updated)
+STA 03
+JMP Loop
+Label TempStorage
+00
+
+// Detecting if even / odd
+Label Loop
+WTA TempStorage
+STB 01 // Get first bit
+AND
+MCA    // Compare
+JPE IfOdd
+
+// If even:
+RDA TempStorage
+SRA // /2
+JMP AfterCycle
+
+// If odd:
+RDA TempStorage
+Label IfOdd
+SLA // *3
+MCB
+ADD
+MCA // +1
+INA
+
+// Continue number / next number
+Label AfterCycle
+MCA
+RDB 01
+JPL Output // Continue number (If the current number is less than (or equal to) the current highest number proven to go towards 1, then the current number has to also go to 1. Therefore, we do not need to keep checking it.)
+JMP Loop
+Label Output
+OUT 01 // Output
+RDA 01
+INA    // Current num += 2 (C has already been moved to A; Using the same logic as before, if the starting current number is even, it immediately goes below the starting current number. This means we can skip all even numbers.)
+MCA
+INA
+MCA
+WTC 01
+JMP Loop
+
+
+
+STA
+03
+JMP
+ Loop
+   Label TempStorage
+00
+   Label Loop
+WTA
+ TempStorage
+STB
+01
+AND
+MCA
+JPE
+ IfOdd
+RDA
+ TempStorage
+SRA
+JMP
+ AfterCycle
+   Label IfOdd
+RDA
+ TempStorage
+SLA
+MCB
+ADD
+MCA
+INA
+   Label AfterCycle
+MCA
+RDB
+01
+JPL
+ Output
+JMP
+ Loop
+   Label Output
+OUT
+01
+RDA
+01
+INA
+MCA
+INA
+MCA
+WTC 01
+JMP
+ Loop
+
+
+
+00 STA
+01 03
+02 JMP
+03  Loop (05)
+      Label TempStorage (04)
+04 00
+      Label Loop (05)
+05 WTA
+06  TempStorage (04)
+07 STB
+08 01
+09 AND
+10 MCA
+11 JPE
+12  IfOdd (18)
+13 RDA
+14  TempStorage (04)
+15 SRA
+16 JMP
+17  AfterCycle (25)
+      Label IfOdd (18)
+18 RDA
+19  TempStorage (04)
+20 SLA
+21 MCB
+22 ADD
+23 MCA
+24 INA
+      Label AfterCycle (25)
+25 MCA
+26 RDB
+27 01
+28 JPL
+29  Output (32)
+30 JMP
+31  Loop (05)
+      Label Output (32)
+32 OUT
+33 01
+34 RDA
+35 01
+36 INA
+37 MCA
+38 INA
+39 MCA
+40 WTC
+41 01
+42 JMP
+43  Loop (05)
+
+
+
+00 01
+01 03
+02 20
+03 05
+04 00
+05 05
+06 04
+07 02
+08 01
+09 16
+10 08
+11 21
+12 18
+13 03
+14 04
+15 15
+16 20
+17 25
+18 03
+19 04
+20 14
+21 09
+22 10
+23 08
+24 12
+25 08
+26 04
+27 01
+28 23
+29 32
+30 20
+31 05
+32 17
+33 01
+34 03
+35 01
+36 12
+37 08
+38 12
+39 08
+40 07
+41 01
+42 20
+43 05
