@@ -20,11 +20,11 @@ Last worked on: 03/30/20
 12 INA ---   Sets register C to register A incremented by 1.
 13 DCA ---   Sets register C to register A decremented by 1.
 14 SLA ---   Sets register C to register A shifted left by 1.
-15 SRA ---   Sets register C to register A shifted reight by 1.
+15 SRA ---   Sets register C to register A shifted right by 1.
 16 AND ---   Sets register C to register A bitwise and register B.
 17 OUT add   Sets the IO register to memory "add".
 18 OTC ---   Sets the IO register to register C.
-19 INP add   Sets momory "add" to the IO register.
+19 INP add   Sets memory "add" to the IO register.
 20 JMP add   Jumps to "add".
 21 JPE add   Jumps to "add" if register A = register B.
 22 JPG add   Jumps to "add" if register A < register B.
@@ -33,19 +33,18 @@ Last worked on: 03/30/20
 
 
 
-Every instruction takes either one or two memory addresses. The first address is used for the
-instruction, and the second address is used for the instruction's data. For example, this
-is what you would use for STA 0A:
+Every instruction takes either one or two memory addresses. The first address is used for the instruction, and the
+second address is used for the instruction's data. For example, this is what you would use for STA 0A:
 01
 10
 
 If you wanted to call ADD then MCA then you could just do
 10
 08
-because both of those instructions use just one byte. If you make a computer using this language, it doesn't have to have either one
-or two address spaces and always have two. When you write code, you can give every instruction two address spaces if you want. This
-will insure compatability, but it will also be even less efficient on computers that do use varying space instructions. If you want to
-have code that takes advantage of both systems, you can use this code:
+because both of those instructions use just one byte. If you make a computer using this language, it doesn't have to have
+either one or two address spaces and always have two. When you write code, you can give every instruction two address
+spaces if you want. This will insure compatability, but it will also be even less efficient on computers that do use
+varying space instructions. If you want to have code that takes advantage of both systems, you can use this code:
 00: 00
 01: 19
 02: 06

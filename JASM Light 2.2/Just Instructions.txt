@@ -13,11 +13,11 @@
 12 INA ---   Sets register C to register A incremented by 1.
 13 DCA ---   Sets register C to register A decremented by 1.
 14 SLA ---   Sets register C to register A shifted left by 1.
-15 SRA ---   Sets register C to register A shifted reight by 1.
+15 SRA ---   Sets register C to register A shifted right by 1.
 16 AND ---   Sets register C to register A bitwise and register B.
 17 OUT add   Sets the IO register to memory "add".
 18 OTC ---   Sets the IO register to register C.
-19 INP add   Sets momory "add" to the IO register.
+19 INP add   Sets memory "add" to the IO register.
 20 JMP add   Jumps to "add".
 21 JPE add   Jumps to "add" if register A = register B.
 22 JPG add   Jumps to "add" if register A < register B.

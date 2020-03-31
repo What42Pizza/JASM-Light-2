@@ -1,7 +1,7 @@
 // Started 09/15/19
 
 // Last worked on: 03/30/20
-// Using JASM Light 2.2
+// Using JASM Light 2.2.1
 
 
 
@@ -81,13 +81,13 @@ boolean[] InstructionTakesData = new boolean[] {
 
 // Vars
 
-byte   ProgramCounter;
-byte[] RAM           ;
+int   ProgramCounter;
+int[] RAM           ;
 
-byte RegisterA ;
-byte RegisterB ;
-byte RegisterC ;
-byte IORegister;
+int RegisterA ;
+int RegisterB ;
+int RegisterC ;
+int IORegister;
 boolean SkipDataFlag;
 
 boolean Running = true ;
@@ -137,7 +137,7 @@ void draw() {
   }
   
   // Program counter
-  byte CurrentInstruction = RAM [ProgramCounter];
+  int CurrentInstruction = RAM [ProgramCounter];
   fill (0);
   if (UseHex) {
     text ("PC: " + hex (ProgramCounter) + ": " + hex (CurrentInstruction), 5, 25);
@@ -160,18 +160,18 @@ void draw() {
   }
   
   // RAM
-  for (byte i = 0; i < RAM.length - Scroll; i ++) {
+  for (int i = 0; i < RAM.length - Scroll; i ++) {
     if (i + Scroll == ProgramCounter) {
       if (UseHex) {
-        text (hex ((byte)(i + Scroll)) + ": " + hex (RAM[i + Scroll]) + " <--", 5, (i + Offset) * 25 + 10);
+        text (hex ((i + Scroll)) + ": " + hex (RAM [i + Scroll]) + " <--", 5, (i + Offset) * 25 + 10);
       } else {
-        text ((byte)(i + Scroll) + ": " + RAM[i + Scroll] + " <--", 5, (i + Offset) * 25 + 10);
+        text ((i + Scroll) + ": " + RAM [i + Scroll] + " <--", 5, (i + Offset) * 25 + 10);
       }
     } else {
       if (UseHex) {
-        text (hex ((byte)(i + Scroll)) + ": " + hex (RAM[i + Scroll]), 5, (i + Offset) * 25 + 10);
+        text (hex ((i + Scroll)) + ": " + hex (RAM [i + Scroll]), 5, (i + Offset) * 25 + 10);
       } else {
-        text ((byte)(i + Scroll) + ": " + RAM[i + Scroll], 5, (i + Offset) * 25 + 10);
+        text ((i + Scroll) + ": " + RAM [i + Scroll], 5, (i + Offset) * 25 + 10);
       }
     }
   }
@@ -208,16 +208,16 @@ void LoadAndRun() {
   // Loading ROM
   if (LoadFromROMDAT) {
     byte[] RAMIn = loadBytes (Directory + "/ROM.dat");
-    RAM = new byte [RAMIn.length + 1];
+    RAM = new int [RAMIn.length + 1];
     arrayCopy (RAMIn, 0, RAM, 0, RAMIn.length); // src, src position, dst, dst position, length
   } else {
     String[] ROMIn = loadStrings (Directory + "/ROM.txt");
-    RAM = new byte [ROMIn.length + 1];
+    RAM = new int [ROMIn.length + 1];
     for (int i = 0; i < ROMIn.length; i ++) {
       if (UseHex) {
-        RAM [i] = (byte)(unhex (ROMIn [i]) & 0xFF);
+        RAM [i] = unhex (ROMIn [i]) & 0xFF;
       } else {
-        RAM [i] = (byte)(int (ROMIn [i]) & 0xFF);
+        RAM [i] = int (ROMIn [i]) & 0xFF;
       }
     }
   }
@@ -249,153 +249,123 @@ void LoadAndRun() {
 
 void ExecuteInstruction() {
   
-  byte Instruction = RAM [ProgramCounter    ];
-  byte Data        = RAM [ProgramCounter + 1];
+  int Instruction = RAM [ProgramCounter    ];
+  int Data        = RAM [ProgramCounter + 1];
   switch (Instruction) {
     
     
     
-    default:
-      SkipDataFlag = true;
-      break;
-    
-    
-    
     case (1): // STA
-      SkipDataFlag = false;
       RegisterA = Data;
       break;
     
     case (2): // STB
-      SkipDataFlag = false;
       RegisterB = Data;
       break;
     
     
     
     case (3): // RDA
-      SkipDataFlag = false;
       RegisterA = RAM [Data];
       break;
     
     case (4): // RDB
-      SkipDataFlag = false;
       RegisterB = RAM [Data];
       break;
     
     case (5): // WTA
-      SkipDataFlag = false;
       RAM [Data] = RegisterA;
       break;
     
     case (6): // WTB
-      SkipDataFlag = false;
       RAM [Data] = RegisterB;
       break;
     
     case (7): // WTC
-      SkipDataFlag = false;
       RAM [Data] = RegisterC;
       break;
     
     
     
     case (8): // MCA
-      SkipDataFlag = true;
       RegisterA = RegisterC;
       break;
     
     case (9): // MCB
-      SkipDataFlag = true;
       RegisterB = RegisterC;
       break;
     
     
     
     case (10): // ADD
-      SkipDataFlag = true;
-      RegisterC = (byte)(RegisterA + RegisterB);
+      RegisterC = (RegisterA + RegisterB);
       break;
     
     case (11): // SUB
-      SkipDataFlag = true;
-      RegisterC = (byte)(RegisterA - RegisterB);
+      RegisterC = (RegisterA - RegisterB);
       break;
     
     case (12): // INA
-      SkipDataFlag = true;
-      RegisterC = (byte)(RegisterA + 1);
+      RegisterC = (RegisterA + 1);
       break;
     
     case (13): // DCA
-      SkipDataFlag = true;
-      RegisterC = (byte)(RegisterA - 1);
+      RegisterC = (RegisterA - 1);
       break;
     
     case (14): // SLA
-      SkipDataFlag = true;
-      RegisterC = (byte)(RegisterA << 1);
+      RegisterC = (RegisterA << 1);
       break;
     
     case (15): // SRA
-      SkipDataFlag = true;
-      RegisterC = (byte)(RegisterA >> 1);
+      RegisterC = (RegisterA >> 1);
       break;
     
     case (16): // AND
-      SkipDataFlag = true;
-      RegisterC = (byte)(RegisterA & RegisterB);
+      RegisterC = (RegisterA & RegisterB);
       break;
     
     case (17): // OUT
-      SkipDataFlag = false;
-      byte OUTData = RAM [Data];
+      int OUTData = RAM [Data];
       println (OUTData);
       IORegister = OUTData;
       break;
     
     case (18): // OTC
-      SkipDataFlag = true;
-      byte OTCData = RegisterC;
+      int OTCData = RegisterC;
       println (OTCData);
       IORegister = OTCData;
       break;
     
     case (19): // INP
-      SkipDataFlag = false;
       RAM [Data] = IORegister;
       break;
     
     
     
     case (20): // JMP
-      SkipDataFlag = false;
-      ProgramCounter = (byte)(Data - 0x02);
+      ProgramCounter = (Data - 0x02);
       break;
     
     case (21): // JPE
-      SkipDataFlag = false;
       if (RegisterA == RegisterB) {
-        ProgramCounter = (byte)(Data - 0x02);
+        ProgramCounter = (Data - 0x02);
       }
       break;
     
     case (22): // JPG
-      SkipDataFlag = false;
       if (RegisterA > RegisterB) {
-        ProgramCounter = (byte)(Data - 0x02);
+        ProgramCounter = (Data - 0x02);
       }
       break;
     
     case (23): // JPL
-      SkipDataFlag = false;
       if (RegisterA < RegisterB) {
-        ProgramCounter = (byte)(Data - 0x02);
+        ProgramCounter = (Data - 0x02);
       }
       break;
     
     case (24): // STP
-      SkipDataFlag = true;
       Running = false;
       break;
     
@@ -403,10 +373,10 @@ void ExecuteInstruction() {
     
   }
   
-  if (SkipDataFlag & !Use2SpaceInstructions) {
-    ProgramCounter += 0x01;
-  } else {
+  if (Instruction < InstructionTakesData.length && InstructionTakesData [Instruction]) {
     ProgramCounter += 0x02;
+  } else {
+    ProgramCounter += 0x01;
   }
   
 }
