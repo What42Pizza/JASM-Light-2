@@ -1,0 +1,65 @@
+JASM Light Extended
+
+Started: 05/15/19
+Last worked on: 04/01/20
+
+
+
+000 NOP ---   No operation.
+128 STA num   Sets register A to "num".
+129 STB num   Sets register B to "num".
+130 RDA add   Reads from memory "add" to register A.
+131 RDB add   Reads from memory "add" to register B.
+132 WTA add   Writes register A to memory "add".
+133 WTB add   Writes register B to memory "add".
+134 WTC add   Writes register C to memory "add".
+001 MCA ---   Moves register C to register A.
+002 MCB ---   Moves register C to register B.
+003 ADD ---   Sets register C to register A + register B.
+004 SUB ---   Sets register C to register A - register B.
+005 INA ---   Sets register C to register A incremented by 1.
+006 DCA ---   Sets register C to register A decremented by 1.
+007 SLA ---   Sets register C to register A shifted left by 1.
+008 SRA ---   Sets register C to register A shifted right by 1.
+009 AND ---   Stes register C to register A bitwise and register B.
+010 ORR ---   Sets register C to register A bitwise or register B.
+011 NOT ---   Sets register C to register A bitwise not register B.
+012 XOR ---   Sets register C to register A bitwise xor register B.
+135 OUT add   Sets the IO register to memory "add".
+136 OTN num   Sets the IO register to "num".
+013 OTC ---   Sets the IO register to register C.
+137 INP add   Sets memory "add" to the IO register.
+014 INA ---   Sets register A to the IO register.
+015 INB ---   Sets register C to the IO register.
+138 JMP add   Jumps to "add".
+139 JPE add   Jumps to "add" if register A = register B.
+140 JPG add   Jumps to "add" if register A > register B.
+141 JPL add   Jumps to "add" if register A < register B.
+142 JNE add   Jumps to "add" if register A != register B.
+143 JGE add   Jumps to "add" if register A >= register B.
+144 JLE add   Jumps to "add" if register A <= register B.
+016 STP ---   Stops execution.
+
+
+
+The idea behind this is that all the instructions that take 1 byte have a zero as the last digit and all the instructions that take 2 bytes have a one as the last digit.
+
+ 1 byte |  2 bytes
+ 0-127  |  128-255
+00 NOP  | 128 STA
+01 MCA  | 129 STB
+02 MCB  | 130 RDA
+03 ADD  | 131 RDB
+04 SUB  | 132 WTA
+05 INA  | 133 WTB
+06 DCA  | 134 WTC
+07 SLA  | 135 OUT
+08 SRA  | 136 OTN
+09 AND  | 137 INP
+10 ORR  | 138 JMP
+11 NOT  | 139 JPE
+12 XOR  | 140 JPG
+13 OTC  | 141 JPL
+14 INA  | 142 JNE
+15 INB  | 143 JGE
+16 STP  | 144 JLE
