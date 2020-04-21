@@ -1,0 +1,278 @@
+// Created:        03/30/20
+// Last worked on: 04/20/20
+
+
+
+// Starting number (auto updated)
+STA 03
+JMP Loop
+Label TempStorage
+00
+
+// Detecting if even / odd
+Label Loop
+WTA TempStorage
+STB 01 // Get first bit
+AND
+MCA    // Compare
+JNE IfEven // If the first bit is not 1, it is even
+
+// If odd:
+RDA TempStorage
+SLA // *3
+MCB
+ADD
+MCA // +1
+INA
+MCA // There is no way to exit the loop after increasing the number, so we don't need to check it. Also, the current number has to be even, so we can go ahead and divide it by 2.
+SRA // /2
+JMP Continue
+
+// If even:
+Label IfEven
+RDA TempStorage
+SRA // /2
+
+// Continue number / next number
+Label Continue
+MCA
+RDB 01
+JGE Loop // Continue number (If the current number is less than (or equal to) the current highest number proven to go towards 1, then the current number has to also go to 1. Therefore, we do not need to keep checking it.)
+OUT 01 // Output
+RDA 01 // Take previously checked number
+STB 255 // Check if ready to stop
+JNE NoStop
+STP
+Label NoStop
+INA    // Current num += 2 (Using the same logic as before, if the starting current number is even, it immediately goes below the starting current number. This means we can skip all even numbers.)
+MCA
+INA
+MCA
+WTC 01
+JMP Loop
+
+
+
+Without comments & moved to correct index:
+
+STA
+03
+JMP
+  Loop
+    Label TempStorage
+00
+    Label Loop
+WTA
+  TempStorage
+STB
+01
+AND
+MCA
+JNE
+  IfEven
+RDA
+  TempStorage
+SLA
+MCB
+ADD
+MCA
+INA
+MCA
+SRA
+JMP
+  Continue
+    Label IfEven
+RDA
+  TempStorage
+SRA
+    Label Continue
+MCA
+RDB
+01
+JGE
+  Loop
+OUT
+01
+RDA
+01
+STB
+255
+JNE
+  NoStop
+STP
+    NoStop
+INA
+MCA
+INA
+MCA
+WTC
+01
+JMP
+  Loop
+
+
+
+Adding index numebrs:
+
+00 STA
+01 03
+02 JMP
+03   Loop (05)
+       Label TempStorage (04)
+04 00
+       Label Loop (05)
+05 WTA
+06   TempStorage (04)
+07 STB
+08 01
+09 AND
+10 MCA
+11 JNE
+12   IfEven (24)
+13 RDA
+14   TempStorage (04)
+15 SLA
+16 MCB
+17 ADD
+18 MCA
+19 INA
+20 MCA
+21 SRA
+22 JMP
+23   Continue (27)
+       Label IfEven (24)
+24 RDA
+25   TempStorage (04)
+26 SRA
+       Label Continue (27)
+27 MCA
+28 RDB
+29 01
+30 JGE
+31   Loop (05)
+32 OUT
+33 01
+34 RDA
+35 01
+36 STB
+37 255
+38 JNE
+39   NoStop (41)
+40 STP
+       Label NoStop (41)
+41 INA
+42 MCA
+43 INA
+44 MCA
+45 WTC
+46 01
+47 JMP
+48   Loop (05)
+
+
+
+Labels replaced:
+
+00 STA
+01 03
+02 JMP
+03 05
+04 00
+05 WTA
+06 04
+07 STB
+08 01
+09 AND
+10 MCA
+11 JNE
+12 24
+13 RDA
+14 04
+15 SLA
+16 MCB
+17 ADD
+18 MCA
+19 INA
+20 MCA
+21 SRA
+22 JMP
+23 27
+24 RDA
+25 04
+26 SRA
+27 MCA
+28 RDB
+29 01
+30 JGE
+31 05
+32 OUT
+33 01
+34 RDA
+35 01
+36 STB
+37 255
+38 JNE
+39 41
+40 STP
+41 INA
+42 MCA
+43 INA
+44 MCA
+45 WTC
+46 01
+47 JMP
+48 05
+
+
+
+Compiled & removed indexes:
+
+128
+003
+148
+005
+000
+136
+004
+129
+001
+014
+001
+152
+024
+131
+004
+012
+002
+008
+001
+010
+001
+013
+148
+027
+131
+004
+013
+001
+132
+001
+153
+005
+143
+001
+131
+001
+129
+255
+152
+041
+022
+010
+001
+010
+001
+138
+001
+148
+005

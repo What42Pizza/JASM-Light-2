@@ -1,4 +1,5 @@
-// Created 03/30/20
+// Created:        03/30/20
+// Last worked on: 03/31/20
 
 
 
@@ -17,18 +18,21 @@ MCA    // Compare
 JPE IfOdd
 
 // If even:
+Label IfEven
 RDA TempStorage
 SRA // /2
 JMP AfterCycle
 
 // If odd:
-RDA TempStorage
 Label IfOdd
+RDA TempStorage
 SLA // *3
 MCB
 ADD
 MCA // +1
 INA
+MCA
+JMP IfEven // There is no way to exit the loop after increasing the number, so we don't need to check it. Also, the current number has to be even, so we can also skip the even/odd check.
 
 // Continue number / next number
 Label AfterCycle
@@ -63,6 +67,7 @@ AND
 MCA
 JPE
  IfOdd
+   Label IfEven
 RDA
  TempStorage
 SRA
@@ -76,6 +81,9 @@ MCB
 ADD
 MCA
 INA
+MCA
+JMP
+ IfEven
    Label AfterCycle
 MCA
 RDB
@@ -116,9 +124,10 @@ JMP
 12  IfOdd (18)
 13 RDA
 14  TempStorage (04)
+      Label IfEven (15)
 15 SRA
 16 JMP
-17  AfterCycle (25)
+17  AfterCycle (28)
       Label IfOdd (18)
 18 RDA
 19  TempStorage (04)
@@ -127,27 +136,30 @@ JMP
 22 ADD
 23 MCA
 24 INA
-      Label AfterCycle (25)
 25 MCA
-26 RDB
-27 01
-28 JPL
-29  Output (32)
-30 JMP
-31  Loop (05)
-      Label Output (32)
-32 OUT
-33 01
-34 RDA
-35 01
-36 INA
-37 MCA
-38 INA
-39 MCA
-40 WTC
-41 01
-42 JMP
-43  Loop (05)
+26 JMP
+27  IfEven (15)
+      Label AfterCycle (28)
+28 MCA
+29 RDB
+30 01
+31 JPL
+32  Output (35)
+33 JMP
+34  Loop (05)
+     Label Output (35)
+35 OUT
+36 01
+37 RDA
+38 01
+39 INA
+40 MCA
+41 INA
+42 MCA
+43 WTC
+44 01
+45 JMP
+46  Loop (05)
 
 
 
@@ -168,7 +180,7 @@ JMP
 14 04
 15 15
 16 20
-17 25
+17 28
 18 03
 19 04
 20 14
@@ -177,21 +189,24 @@ JMP
 23 08
 24 12
 25 08
-26 04
-27 01
-28 23
-29 32
-30 20
-31 05
-32 17
-33 01
-34 03
-35 01
-36 12
-37 08
-38 12
-39 08
-40 07
-41 01
-42 20
-43 05
+26 20
+27 15
+28 08
+29 04
+30 01
+31 23
+32 35
+33 20
+34 05
+35 17
+36 01
+37 03
+38 01
+39 12
+40 08
+41 12
+42 08
+43 07
+44 01
+45 20
+46 05
