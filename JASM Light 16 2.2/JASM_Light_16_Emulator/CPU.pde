@@ -320,6 +320,11 @@ void ExecuteInstruction() {
       }
       break;
     
+    case (155): // JPO
+      Pointer = DataReg1;
+      BlockInc = true;
+      break;
+    
     
     
   }

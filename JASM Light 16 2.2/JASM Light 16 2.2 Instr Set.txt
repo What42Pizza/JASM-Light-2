@@ -61,6 +61,7 @@ Instructions:
 152 JNE add   Jumps to "add" if register A != register B.
 153 JGE add   Jumps to "add" if register A >= register B.
 154 JLE add   Jumps to "add" if register A <= register B.
+155 JPO add   Jumps to "add", but only using one data register.
 022 STP ---   Stops execution.
 
 
@@ -116,6 +117,7 @@ JPL: Jump if less than (or jump less)
 JNE: Jump if not equal (or jump not equal)
 JGE: Jump if greater than or equal (or jump greater equal)
 JLE: Jump if less than or equal than (or jump less equal)
+JPO: Jump with one byte (or jump one, or B-jump ((single) byte jump))
 STP: Stop
 
 
@@ -184,3 +186,4 @@ instructions that take 2 bytes have a one as the last digit.
 152 JNE
 153 JGE
 154 JLE
+155 JPO

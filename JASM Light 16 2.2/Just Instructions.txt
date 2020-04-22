@@ -49,4 +49,5 @@ JASM Light 16 2.2 Instruction Set 4/20/20
 152 JNE add   Jumps to "add" if register A != register B.
 153 JGE add   Jumps to "add" if register A >= register B.
 154 JLE add   Jumps to "add" if register A <= register B.
+155 JPO add   Jumps to "add", but only using one data register.
 022 STP ---   Stops execution.
