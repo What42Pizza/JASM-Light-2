@@ -1,0 +1,70 @@
+How to use:
+
+Jumping:
+STA sub-routine address low bit
+WTA JSR_JumpLowBit
+STD sub-routine address high bit
+STA return address low bit
+STB return address high bit
+JMP JSR
+
+Retruning:
+JMP RET
+
+
+
+
+
+Code:
+
+
+
+00 STD 00 -- Jump to code start
+02 JMP 00
+
+
+
+Label JSR_JumpLowBit = 16
+
+Label JSR_JumpHighBit = 14
+Label JSR_ReturnLowBit1 = 07
+Label JSR_ReturnHighBit1 = 09
+Label JSR_ReturnLowBit2 = 24
+Label JSR_ReturnHighBit2 = 28
+
+Label JSR_ReturnsLow = 128
+Label JSR_ReturnsHigh = 129
+
+
+Label JSR
+-- This writes the return address then updates the positions
+
+04 WTD JSR_JumpHighBit
+06 WTA JSR_ReturnsLow
+08 WTB JSR_ReturnsHigh
+
+0A RDA JSR_ReturnHighBit1 -- Take high bit
+0C INA
+0D WTC JSR_ReturnLowBit1 -- Set low bit to inc high bit
+0F MCA
+10 INA
+11 WTC JSR_ReturnHighBit1 -- Set high bit to inc low bit
+13 STD 00 -- Jump to sub address
+15 JMP 00
+
+
+Label RET
+-- This updates the positions then retrieves the return address
+
+16 RDA JSR_ReturnLowBit1 -- Take low bit
+18 DCA
+19 WTC JSR_ReturnHighBit1 -- Set high bit to dec low bit
+1B WTC JSR_ReturnHighBit2
+1D MCA
+1E DCA
+1F WTC JSR_ReturnLowBit1 -- Set Low bit to dec high bit
+21 WTC JSR_RetrunLowBit2 -- If there was a pipeline, a nop might be needed after this instr
+23 RDA 00 -- Retrieve low bit
+25 WTA +4
+27 RDD 00 -- Retrieve high bit
+29 JMP 00

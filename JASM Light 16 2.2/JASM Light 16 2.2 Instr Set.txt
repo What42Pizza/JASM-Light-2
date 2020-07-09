@@ -61,7 +61,13 @@ Instructions:
 152 JNE add   Jumps to "add" if register A != register B.
 153 JGE add   Jumps to "add" if register A >= register B.
 154 JLE add   Jumps to "add" if register A <= register B.
-155 JPO add   Jumps to "add", but only using one data register.
+155 JMPO add  Jumps to "add", but only using one data register.
+156 JPEO add  Jumps to "add" if register A = register B using one one data register.
+157 JPGO add   Jumps to "add" if register A > register B using one one data register.
+158 JPLO add   Jumps to "add" if register A < register B using one one data register.
+159 JNEO add   Jumps to "add" if register A != register B using one one data register.
+160 JGEO add   Jumps to "add" if register A >= register B using one one data register.
+161 JLEO add   Jumps to "add" if register A <= register B using one one data register.
 022 STP ---   Stops execution.
 
 
@@ -116,8 +122,14 @@ JPG: Jump if greater than (or jump greater)
 JPL: Jump if less than (or jump less)
 JNE: Jump if not equal (or jump not equal)
 JGE: Jump if greater than or equal (or jump greater equal)
-JLE: Jump if less than or equal than (or jump less equal)
-JPO: Jump with one byte (or jump one, or B-jump ((single) byte jump))
+JLE: Jump if less than or equal (or jump less equal)
+JMPO: Jump with one byte (or jump one, or B-jump ((single) byte jump))
+JPEO: Jump if equal with one byte (or jump equal one)
+JPGO: Jump if greater than with one byte (or jump greater one)
+JPLO: Jump if less than with one byte (or jump less one)
+JNEO: Jump if not equal with one byte (or jump not equal one)
+JGEO: Jump if greater than or equal with one byte (or jump greater equal one)
+JLEO: Jump if less than or equal with one byte (or jump less equal one)
 STP: Stop
 
 
@@ -186,4 +198,10 @@ instructions that take 2 bytes have a one as the last digit.
 152 JNE
 153 JGE
 154 JLE
-155 JPO
+155 JMPO
+156 JPEO
+157 JPGO
+158 JPLO
+159 JNEO
+160 JGEO
+161 JLEO

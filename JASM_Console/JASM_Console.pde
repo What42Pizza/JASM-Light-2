@@ -11,17 +11,15 @@ String InputType = "dec";
 //  dec    (writtin in decimal)
 //  hex    (writtin in headecimal)
 //  byte   (.dat file)
-//  binary (writtin in binary)
-String Directory = "C:/ProcessingPrograms/JASM Light 16 2.2";
-int RAMSize = 65536;
+//  binary (written in binary)
+String Directory = "C:/ProcessingPrograms/JASM Console";
+int RAMSize = 65536; // 16 KB
 
-boolean DEBUG_Step = false;
-
-
+boolean DEBUG_WaitForStep = true;
 
 
 
-// Classes
+// Vars
 
 BYTE B = new BYTE();
 SHORT S = new SHORT();
@@ -38,7 +36,7 @@ void setup() {
   
   // Basic setup
   
-  size (256, 224);
+  size (1024, 896);
   frameRate (60);
   background (255);
   
@@ -46,7 +44,7 @@ void setup() {
   
   Init();
   
-  if (!DEBUG_Step) {
+  if (!DEBUG_WaitForStep) {
     thread("RunCPU");
   }
   
@@ -93,7 +91,7 @@ void Init() {
 
 
 void draw() {
-  if (!Stepping) {
+  if (!SteppingFlag) {
     exit();
   }
 }
@@ -105,7 +103,7 @@ void draw() {
 // Uncallable functions
 
 void keyPressed() {
-  if (DEBUG_Step && key == ' ') {
+  if (DEBUG_WaitForStep && key == ' ') {
     StepCPU();
     println (ALUA + " " + ALUB + " " + ALUC);
   }

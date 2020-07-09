@@ -1,25 +1,28 @@
+// Everything regarding the CPU
 
 
 
 
 
-int     Pointer  = 0    ;
-short   InstrReg = 0    ;
-short   DataReg1 = 0    ;
-short   DataReg2 = 0    ;
-short   ALUA     = 0    ;
-short   ALUB     = 0    ;
-short   ALUC     = 0    ;
-short   IOReg    = 0    ;
-boolean BlockInc = false;
-boolean Stepping = true ;
+int     Pointer  = 0;
+short   InstrReg = 0;
+short   DataReg1 = 0;
+short   DataReg2 = 0;
+short   ALUA     = 0;
+short   ALUB     = 0;
+short   ALUC     = 0;
+short   IOReg    = 0;
+
+boolean BlockIncFlag     = false;
+boolean SteppingFlag     = true ;
+boolean LoadingInstrFlag = false;
 
 
 
 
 
 void RunCPU() {
-  while (Stepping) {
+  while (SteppingFlag) {
     StepCPU();
   }
 }
@@ -29,7 +32,9 @@ void RunCPU() {
 void StepCPU() {
   
   //print (Pointer);
+  LoadingInstrFlag = true;
   InstrReg = GetRAM(Pointer);
+  LoadingInstrFlag = false;
   if (InstrReg > 127) {
     Pointer = S.inc(Pointer);
     DataReg1 = GetRAM(Pointer);
@@ -38,10 +43,10 @@ void StepCPU() {
     //println ("; Executing " + InstrReg);
   }
   ExecuteInstruction();
-  if (!BlockInc) {
+  if (!BlockIncFlag) {
     Pointer = S.inc(Pointer);
   }
-  BlockInc = false;
+  BlockIncFlag = false;
   
 }
 
@@ -165,7 +170,7 @@ void ExecuteInstruction() {
     // ================================================================  Execution
     
     case (22): // STP
-      Stepping = false;
+      SteppingFlag = false;
       break;
     
     
@@ -275,98 +280,54 @@ void ExecuteInstruction() {
     
     case (148): // JMP
       Pointer = S.GetShortFromBytes(DataReg1, DataReg2);
-      BlockInc = true;
+      BlockIncFlag = true;
       break;
     
     case (149): // JPE
       if (ALUA == ALUB) {
         Pointer = S.GetShortFromBytes(DataReg1, DataReg2);
-        BlockInc = true;
+        BlockIncFlag = true;
       }
       break;
     
     case (150): // JPG
       if (ALUA > ALUB) {
         Pointer = S.GetShortFromBytes(DataReg1, DataReg2);
-        BlockInc = true;
+        BlockIncFlag = true;
       }
       break;
     
     case (151): // JPL
       if (ALUA < ALUB) {
         Pointer = S.GetShortFromBytes(DataReg1, DataReg2);
-        BlockInc = true;
+        BlockIncFlag = true;
       }
       break;
     
     case (152): // JNE
       if (ALUA != ALUB) {
         Pointer = S.GetShortFromBytes(DataReg1, DataReg2);
-        BlockInc = true;
+        BlockIncFlag = true;
       }
       break;
     
     case (153): // JGE
       if (ALUA >= ALUB) {
         Pointer = S.GetShortFromBytes(DataReg1, DataReg2);
-        BlockInc = true;
+        BlockIncFlag = true;
       }
       break;
     
     case (154): // JLE
       if (ALUA <= ALUB) {
         Pointer = S.GetShortFromBytes(DataReg1, DataReg2);
-        BlockInc = true;
+        BlockIncFlag = true;
       }
       break;
     
-    
-    
-    case (155): // JMPO
+    case (155): // JPO
       Pointer = DataReg1;
-      BlockInc = true;
-      break;
-    
-    case (156): // JPEO
-      if (ALUA == ALUB) {
-        Pointer = DataReg1;
-        BlockInc = true;
-      }
-      break;
-    
-    case (157): // JPGO
-      if (ALUA > ALUB) {
-        Pointer = DataReg1;
-        BlockInc = true;
-      }
-      break;
-    
-    case (158): // JPLO
-      if (ALUA < ALUB) {
-        Pointer = DataReg1;
-        BlockInc = true;
-      }
-      break;
-    
-    case (159): // JNEO
-      if (ALUA != ALUB) {
-        Pointer = DataReg1;
-        BlockInc = true;
-      }
-      break;
-    
-    case (160): // JGEO
-      if (ALUA >= ALUB) {
-        Pointer = DataReg1;
-        BlockInc = true;
-      }
-      break;
-    
-    case (161): // JLEO
-      if (ALUA <= ALUB) {
-        Pointer = DataReg1;
-        BlockInc = true;
-      }
+      BlockIncFlag = true;
       break;
     
     
