@@ -1,4 +1,4 @@
-JASM Light 16 2.2
+JASM Light 16 2.3
 
 Started: 05/15/19
 Last worked on: 08/07/20
@@ -61,70 +61,76 @@ Instructions:
 161 JLE add   Jumps to "add" if register A <= register B.
 162 JAZ add   Jumps to "add" if register A = 0.
 163 JAN add   Jumps to "add" if register A != 0.
-164 JMPO add  Jumps to "add", but only using one data register.
-165 JPEO add  Jumps to "add" if register A = register B using one one data register.
-166 JPGO add   Jumps to "add" if register A > register B using one one data register.
-167 JPLO add   Jumps to "add" if register A < register B using one one data register.
-168 JNEO add   Jumps to "add" if register A != register B using one one data register.
-169 JGEO add   Jumps to "add" if register A >= register B using one one data register.
-170 JLEO add   Jumps to "add" if register A <= register B using one one data register.
-171 JAZO add   Jumps to "add" if register A = 0 using one data register.
-172 JANO add   Jumps to "add" if register A != 0 using one data register.
+164 JCZ add   Jumps to "add" if register C = 0.
+165 JCN add   Jumps to "add" if register C != 0.
+166 JMPO add  Jumps to "add", but only using one data register.
+167 JPEO add  Jumps to "add" if register A = register B using one one data register.
+168 JPGO add  Jumps to "add" if register A > register B using one one data register.
+169 JPLO add  Jumps to "add" if register A < register B using one one data register.
+170 JNEO add  umps to "add" if register A != register B using one one data register.
+171 JGEO add  Jumps to "add" if register A >= register B using one one data register.
+172 JLEO add  Jumps to "add" if register A <= register B using one one data register.
+173 JAZO add  Jumps to "add" if register A = 0 using one data register.
+174 JANO add  Jumps to "add" if register A != 0 using one data register.
+175 JCZO add  Jumps to "add" if register C = 0 using one register.
+176 JCNO add  Jumps to "add" if register C != 0 using one data register.
 018 STP ---   Stops execution.
 
 
 
 Names:
 
-NOP: No operation
-STA: Store A
-STB: Store B
-STD: Store D
-RDA: Read A
-RDB: Read B
-RDD: Read D
-RAB: Read A both
-RBB: Read B both
-WTA: Write A
-WTB: Write B
-WTC: Write C
-WTD: Write D
-WAB: Write A both
-WBB: Write B both
-WCB: Write C both
-CRA: Cache read A
-CRB: Cache read B
-CRD: Cache read D
-CWA: Cache write A
-CWB: Cache write B
-CWC: Cache write C
-CWD: Cache write D
-MCA: Move C to A (or move C A)
-MCB: Move C to B (or move C B)
-MCD: Move C to D (or move C D)
-MAD: Move A to D (or move A D)
-MBD: Move B to D (or move B D)
-MDA: Move D to A (or move D A)
-MDB: Move D to B (or move D B)
-ADD: Add
-SUB: Subtract
-INA: Increment A (or increment)
-DCA: Decrement A (or decrement)
-SLA: Shift left A (or shift left)
-SRA: Shift right A (or shift right)
-AND: And
-ORR: Or
-NOT: Not
-XOR: X-or
-JMP: Jump
-JPE: Jump if equal (or jump equal)
-JPG: Jump if greater than (or jump greater)
-JPL: Jump if less than (or jump less)
-JNE: Jump if not equal (or jump not equal)
-JGE: Jump if greater than or equal (or jump greater equal)
-JLE: Jump if less than or equal (or jump less equal)
-JAZ: Jump if A is zero (or jump A zero)
-JAN: Jump if A is not zero (or jump A not zero)
+NOP:  No operation
+STA:  Store A
+STB:  Store B
+STD:  Store D
+RDA:  Read A
+RDB:  Read B
+RDD:  Read D
+RAB:  Read A both
+RBB:  Read B both
+WTA:  Write A
+WTB:  Write B
+WTC:  Write C
+WTD:  Write D
+WAB:  Write A both
+WBB:  Write B both
+WCB:  Write C both
+CRA:  Cache read A
+CRB:  Cache read B
+CRD:  Cache read D
+CWA:  Cache write A
+CWB:  Cache write B
+CWC:  Cache write C
+CWD:  Cache write D
+MCA:  Move C to A (or move C A)
+MCB:  Move C to B (or move C B)
+MCD:  Move C to D (or move C D)
+MAD:  Move A to D (or move A D)
+MBD:  Move B to D (or move B D)
+MDA:  Move D to A (or move D A)
+MDB:  Move D to B (or move D B)
+ADD:  Add
+SUB:  Subtract
+INA:  Increment A (or increment)
+DCA:  Decrement A (or decrement)
+SLA:  Shift left A (or shift left)
+SRA:  Shift right A (or shift right)
+AND:  And
+ORR:  Or
+NOT:  Not
+XOR:  X-or
+JMP:  Jump
+JPE:  Jump if equal (or jump equal)
+JPG:  Jump if greater than (or jump greater)
+JPL:  Jump if less than (or jump less)
+JNE:  Jump if not equal (or jump not equal)
+JGE:  Jump if greater than or equal (or jump greater equal)
+JLE:  Jump if less than or equal (or jump less equal)
+JAZ:  Jump if A is zero (or jump A zero)
+JAN:  Jump if A is not zero (or jump A not zero)
+JCZ:  Jump if C is zero (or jump C zero)
+JCN:  Jump if C is not zero (or jump C not zero)
 JMPO: Jump with one byte (or jump one, or B-jump ((single) byte jump))
 JPEO: Jump if equal with one byte (or jump equal one)
 JPGO: Jump if greater than with one byte (or jump greater one)
@@ -134,7 +140,9 @@ JGEO: Jump if greater than or equal with one byte (or jump greater equal one)
 JLEO: Jump if less than or equal with one byte (or jump less equal one)
 JAZO: Jump if A is zero with one byte (or jump A zero one)
 JANO: Jump if A is not zero with one byte (or jump A not zero one)
-STP: Stop
+JCZO: Jump if C is zero with one byte (or jump C zero one)
+JCNO: Jump if C is not zero with one byte (or jump C not zero one)
+STP:  Stop
 
 
 
@@ -207,12 +215,16 @@ instructions that take 2 bytes have a one as the last digit.
 161 JLE
 162 JAZ
 163 JAN
-164 JMPO
-166 JPEO
-167 JPGO
-168 JPLO
-169 JNEO
-170 JGEO
-171 JLEO
-172 JAZO
-173 JANO
+164 JCZ
+165 JCN
+166 JMPO
+167 JPEO
+168 JPGO
+169 JPLO
+170 JNEO
+171 JGEO
+172 JLEO
+173 JAZO
+174 JANO
+175 JCZO
+176 JCNO
