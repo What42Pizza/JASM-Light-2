@@ -1,0 +1,228 @@
+JASM Light 16 2.2
+
+Started: 05/15/19
+Last worked on: 08/07/20
+
+
+This is like JASM Light Extended, but with 16 bits. Instead of having a single 8 bit data register to hold the
+instruction data, there are 2x8 bit data registers. This means the computer, while stll being 8-bit, can still access
+64 kilobytes of memory / storage
+
+
+
+Instructions:
+
+000 NOP ---   No operation.
+128 STA num   Sets register A to "num".
+129 STB num   Sets register B to "num".
+130 STD num   Sets data register 2 to "num
+131 RDA add   Reads from memory "add" to register A.
+132 RDB add   Reads from memory "add" to register B.
+133 RDD add   Reads from memory "add" to data register 2.
+134 RAB add   Reads from memory "add" to register A using both data registers.
+135 RBB add   Reads from memory "add" to register B using both data registers.
+136 WTA add   Writes register A to memory "add".
+137 WTB add   Writes register B to memory "add".
+138 WTC add   Writes register C to memory "add".
+139 WTD add   Writes data register 2 to memory "add".
+140 WAB add   Writes register A to memory "add" using both data registers.
+141 WBB add   Writes register B to memory "add" using both data registers.
+142 WCB add   Writes register C to memory "add" using both data registers.
+143 CRA add   Read from cache "add" to register A.
+144 CRB add   Read from cache "add" to register B.
+145 CRD add   Read from cache "add" to register data register 2.
+146 CWA add   Writes register A to cache "add".
+147 CWB add   Writes register B to cache "add".
+148 CWC add   Writes register C to cache "add".
+149 CWD add   Writes register data register 2 to cache "add".
+001 MCA ---   Moves register C to register A.
+002 MCB ---   Moves register C to register B.
+003 MCD ---   Moves register C to data register 2.
+004 MAD ---   Moves register A to data register 2.
+005 MBD ---   Moves register B to data register 2.
+006 MDA ---   Moves data register 2 to register A.
+007 MDB ---   Moves data register 2 to register B.
+008 ADD ---   Sets register C to register A + register B.
+009 SUB ---   Sets register C to register A - register B.
+010 INA ---   Sets register C to register A incremented by 1.
+011 DCA ---   Sets register C to register A decremented by 1.
+012 SLA ---   Sets register C to register A shifted left by 1.
+013 SRA ---   Sets register C to register A shifted right by 1.
+014 AND ---   Stes register C to register A bitwise and register B.
+015 ORR ---   Sets register C to register A bitwise or register B.
+016 NOT ---   Sets register C to register A bitwise not register B.
+017 XOR ---   Sets register C to register A bitwise xor register B.
+150 OUT add   Sets the IO register to memory "add".
+151 OTB add   Sets the IO register to memory "add" using both data registers.
+152 OTN num   Sets the IO register to "num".
+018 OTC ---   Sets the IO register to register C.
+153 INP add   Sets memory "add" to the IO register.
+154 INB add   Sets memory "add" to the IO register using both data registers.
+019 NPA ---   Sets register A to the IO register.
+020 NPB ---   Sets register C to the IO register.
+021 NPD ---   Sets data register 2 to the IO register.
+155 JMP add   Jumps to "add".
+156 JPE add   Jumps to "add" if register A = register B.
+157 JPG add   Jumps to "add" if register A > register B.
+158 JPL add   Jumps to "add" if register A < register B.
+159 JNE add   Jumps to "add" if register A != register B.
+160 JGE add   Jumps to "add" if register A >= register B.
+161 JLE add   Jumps to "add" if register A <= register B.
+162 JMPO add  Jumps to "add", but only using one data register.
+163 JPEO add  Jumps to "add" if register A = register B using one one data register.
+164 JPGO add   Jumps to "add" if register A > register B using one one data register.
+165 JPLO add   Jumps to "add" if register A < register B using one one data register.
+166 JNEO add   Jumps to "add" if register A != register B using one one data register.
+167 JGEO add   Jumps to "add" if register A >= register B using one one data register.
+168 JLEO add   Jumps to "add" if register A <= register B using one one data register.
+022 STP ---   Stops execution.
+
+
+
+Names:
+
+NOP: No operation
+STA: Store A
+STB: Store B
+STD: Store D
+RDA: Read A
+RDB: Read B
+RDD: Read D
+RAB: Read A both
+RBB: Read B both
+WTA: Write A
+WTB: Write B
+WTC: Write C
+WTD: Write D
+WAB: Write A both
+WBB: Write B both
+WCB: Write C both
+CRA: Cache read A
+CRB: Cache read B
+CRD: Cache read D
+CWA: Cache write A
+CWB: Cache write B
+CWC: Cache write C
+CWD: Cache write D
+MCA: Move C to A (or move C A)
+MCB: Move C to B (or move C B)
+MCD: Move C to D (or move C D)
+MAD: Move A to D (or move A D)
+MBD: Move B to D (or move B D)
+MDA: Move D to A (or move D A)
+MDB: Move D to B (or move D B)
+ADD: Add
+SUB: Subtract
+INA: Increment A (or increment)
+DCA: Decrement A (or decrement)
+SLA: Shift left A (or shift left)
+SRA: Shift right A (or shift right)
+AND: And
+ORR: Or
+NOT: Not
+XOR: X-or
+OUT: Output
+OTB: Output using both registers (or output both)
+OTN: Output number (or output num)
+OTC: Output C
+INP: Input
+INB: Input using both registers (or input both)
+NPA: Input to A (or input A)
+NPB: Input to B (or input B)
+NPD: Input to D (or input D)
+JMP: Jump
+JPE: Jump if equal (or jump equal)
+JPG: Jump if greater than (or jump greater)
+JPL: Jump if less than (or jump less)
+JNE: Jump if not equal (or jump not equal)
+JGE: Jump if greater than or equal (or jump greater equal)
+JLE: Jump if less than or equal (or jump less equal)
+JMPO: Jump with one byte (or jump one, or B-jump ((single) byte jump))
+JPEO: Jump if equal with one byte (or jump equal one)
+JPGO: Jump if greater than with one byte (or jump greater one)
+JPLO: Jump if less than with one byte (or jump less one)
+JNEO: Jump if not equal with one byte (or jump not equal one)
+JGEO: Jump if greater than or equal with one byte (or jump greater equal one)
+JLEO: Jump if less than or equal with one byte (or jump less equal one)
+STP: Stop
+
+
+
+
+
+The idea behind this is that all the instructions that take 1 byte have a zero as the last digit and all the
+instructions that take 2 bytes have a one as the last digit.
+
+
+
+1 byte instructions:
+
+000 NOP
+001 MCA
+002 MCB
+003 MCD
+004 MAD
+005 MBD
+006 MDA
+007 MDB
+008 ADD
+009 SUB
+010 INA
+011 DCA
+012 SLA
+013 SRA
+014 AND
+015 ORR
+016 NOT
+017 XOR
+018 OTC
+019 NPA
+020 NPB
+021 NPD
+022 STP
+
+
+
+2 byte instructions:
+
+128 STA
+129 STB
+130 STD
+131 RDA
+132 RDB
+133 RDD
+134 RAB
+135 RBB
+136 WTA
+137 WTB
+138 WTC
+139 WTD
+140 WAB
+141 WBB
+142 WCB
+143 CRA
+144 CRB
+145 CRD
+146 CWA
+147 CWB
+148 CWC
+149 CWD
+150 OUT
+151 OTB
+152 OTN
+153 INP
+154 INB
+155 JMP
+156 JPE
+157 JPG
+158 JPL
+159 JNE
+160 JGE
+161 JLE
+162 JMPO
+163 JPEO
+164 JPGO
+165 JPLO
+166 JNEO
+167 JGEO
+168 JLEO
