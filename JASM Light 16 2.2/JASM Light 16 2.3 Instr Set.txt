@@ -52,15 +52,6 @@ Instructions:
 015 ORR ---   Sets register C to register A bitwise or register B.
 016 NOT ---   Sets register C to register A bitwise not register B.
 017 XOR ---   Sets register C to register A bitwise xor register B.
-150 OUT add   Sets the IO register to memory "add".
-151 OTB add   Sets the IO register to memory "add" using both data registers.
-152 OTN num   Sets the IO register to "num".
-018 OTC ---   Sets the IO register to register C.
-153 INP add   Sets memory "add" to the IO register.
-154 INB add   Sets memory "add" to the IO register using both data registers.
-019 NPA ---   Sets register A to the IO register.
-020 NPB ---   Sets register C to the IO register.
-021 NPD ---   Sets data register 2 to the IO register.
 155 JMP add   Jumps to "add".
 156 JPE add   Jumps to "add" if register A = register B.
 157 JPG add   Jumps to "add" if register A > register B.
@@ -68,14 +59,18 @@ Instructions:
 159 JNE add   Jumps to "add" if register A != register B.
 160 JGE add   Jumps to "add" if register A >= register B.
 161 JLE add   Jumps to "add" if register A <= register B.
-162 JMPO add  Jumps to "add", but only using one data register.
-163 JPEO add  Jumps to "add" if register A = register B using one one data register.
-164 JPGO add   Jumps to "add" if register A > register B using one one data register.
-165 JPLO add   Jumps to "add" if register A < register B using one one data register.
-166 JNEO add   Jumps to "add" if register A != register B using one one data register.
-167 JGEO add   Jumps to "add" if register A >= register B using one one data register.
-168 JLEO add   Jumps to "add" if register A <= register B using one one data register.
-022 STP ---   Stops execution.
+162 JAZ add   Jumps to "add" if register A = 0.
+163 JAN add   Jumps to "add" if register A != 0.
+164 JMPO add  Jumps to "add", but only using one data register.
+165 JPEO add  Jumps to "add" if register A = register B using one one data register.
+166 JPGO add   Jumps to "add" if register A > register B using one one data register.
+167 JPLO add   Jumps to "add" if register A < register B using one one data register.
+168 JNEO add   Jumps to "add" if register A != register B using one one data register.
+169 JGEO add   Jumps to "add" if register A >= register B using one one data register.
+170 JLEO add   Jumps to "add" if register A <= register B using one one data register.
+171 JAZO add   Jumps to "add" if register A = 0 using one data register.
+172 JANO add   Jumps to "add" if register A != 0 using one data register.
+018 STP ---   Stops execution.
 
 
 
@@ -121,15 +116,6 @@ AND: And
 ORR: Or
 NOT: Not
 XOR: X-or
-OUT: Output
-OTB: Output using both registers (or output both)
-OTN: Output number (or output num)
-OTC: Output C
-INP: Input
-INB: Input using both registers (or input both)
-NPA: Input to A (or input A)
-NPB: Input to B (or input B)
-NPD: Input to D (or input D)
 JMP: Jump
 JPE: Jump if equal (or jump equal)
 JPG: Jump if greater than (or jump greater)
@@ -137,6 +123,8 @@ JPL: Jump if less than (or jump less)
 JNE: Jump if not equal (or jump not equal)
 JGE: Jump if greater than or equal (or jump greater equal)
 JLE: Jump if less than or equal (or jump less equal)
+JAZ: Jump if A is zero (or jump A zero)
+JAN: Jump if A is not zero (or jump A not zero)
 JMPO: Jump with one byte (or jump one, or B-jump ((single) byte jump))
 JPEO: Jump if equal with one byte (or jump equal one)
 JPGO: Jump if greater than with one byte (or jump greater one)
@@ -144,6 +132,8 @@ JPLO: Jump if less than with one byte (or jump less one)
 JNEO: Jump if not equal with one byte (or jump not equal one)
 JGEO: Jump if greater than or equal with one byte (or jump greater equal one)
 JLEO: Jump if less than or equal with one byte (or jump less equal one)
+JAZO: Jump if A is zero with one byte (or jump A zero one)
+JANO: Jump if A is not zero with one byte (or jump A not zero one)
 STP: Stop
 
 
@@ -175,11 +165,7 @@ instructions that take 2 bytes have a one as the last digit.
 015 ORR
 016 NOT
 017 XOR
-018 OTC
-019 NPA
-020 NPB
-021 NPD
-022 STP
+018 STP
 
 
 
@@ -219,10 +205,14 @@ instructions that take 2 bytes have a one as the last digit.
 159 JNE
 160 JGE
 161 JLE
-162 JMPO
-163 JPEO
-164 JPGO
-165 JPLO
-166 JNEO
-167 JGEO
-168 JLEO
+162 JAZ
+163 JAN
+164 JMPO
+166 JPEO
+167 JPGO
+168 JPLO
+169 JNEO
+170 JGEO
+171 JLEO
+172 JAZO
+173 JANO
