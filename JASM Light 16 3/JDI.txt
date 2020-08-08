@@ -4,9 +4,9 @@ Created 08/07/20
 
 
 
-    JASM Data Interface is usually be shortened to JDI, with two numbers following it. The first number is the number
-of bits in the data bus. The second number is the number of bits in the address bus. For example, if a JDI has an
-8-bit data bus and a 16-bit address bus, it would be referred to as JDI 8-16.
+    JASM Data Interface is usually be shortened to JDI, and two numbers will follow it. The first number is the number
+of bits in the data. The second number is the number of bits in the address. For example, if a JDI has an 8-bit data
+interface and a 16-bit address interface, it would be JDI 8-16.
 
 There are 5 main components to a JDI bus:
 x-bit Data bus       /\  \/
@@ -19,13 +19,11 @@ y-bit Address bus    /\
 description above, if a line/bus has /\ next to it, it goes from the controller to the responder, and vise versa. If it
 has both, the data can go either way.
 
-    Each JDI can only have one controller, but there can be multiple responders hooked up to the same JDI. There can
-aslo be multiple JDI in a single computer. If there are multiple responders, each one has to be set up to only respond
-if the address being outputted to the bus is within their specified range.
-
-    The reasoning for the 5th line being a 'not ready line' instead of a 'ready line' is that every responder on the bus
-has to disable their not ready line for the controller to know that every responder is ready. If it were instead a ready
-line, then managing multiple responders would be slightly harder.
+    There can only be one controller hooked up to a JDI, but there can be multiple responders hooked up to the same
+JDI. If there are multiple responders, they need to only respond if the address being outputted to the bus is within
+their specified range. The reasoning for the 5th line being a not ready line instead of a ready line is that every
+responder on the bus has to disable their not ready line for the controller to know that every responder is ready. If
+it were a ready line, then managing multiple responders would be slightly harder.
 
 
 
@@ -52,8 +50,7 @@ When the conrtoller wants to read data, it has to:
 When a responder has a write signal, it has to:
 1: Enable the not ready line
 2: Process the data on the data bus using the address on the address bus
-3: Wait for the write line to turn off so that it doesn't immediately start again
-4: Disable the not ready line
+3: Disable the not ready line
 
 When a responder has a read signal, it has to:
 1: Output data to the data bus using the address on the address bus

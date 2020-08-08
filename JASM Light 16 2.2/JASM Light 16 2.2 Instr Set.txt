@@ -41,7 +41,7 @@ Instructions:
 011 DCA ---   Sets register C to register A decremented by 1.
 012 SLA ---   Sets register C to register A shifted left by 1.
 013 SRA ---   Sets register C to register A shifted right by 1.
-014 AND ---   Stes register C to register A bitwise and register B.
+014 AND ---   Sets register C to register A bitwise and register B.
 015 ORR ---   Sets register C to register A bitwise or register B.
 016 NOT ---   Sets register C to register A bitwise not register B.
 017 XOR ---   Sets register C to register A bitwise xor register B.
