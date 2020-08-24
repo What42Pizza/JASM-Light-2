@@ -1,7 +1,7 @@
 JASM Light 16 3
 
 Started: 05/15/19
-Last worked on: 08/08/20
+Last worked on: 08/24/20
 
 
 This is like JASM Light Extended, but with 16 bits. Instead of having a single 8 bit data register to hold the
@@ -22,15 +22,21 @@ Instructions:
 007 MDB ---   Moves data register 2 to register B.
 008 ADD ---   Sets register C to register A + register B.
 009 SUB ---   Sets register C to register A - register B.
-010 INA ---   Sets register C to register A incremented by 1.
-011 DCA ---   Sets register C to register A decremented by 1.
-012 SLA ---   Sets register C to register A shifted left by 1.
-013 SRA ---   Sets register C to register A shifted right by 1.
-014 AND ---   Stes register C to register A bitwise and register B.
-015 ORR ---   Sets register C to register A bitwise or register B.
-016 NOT ---   Sets register C to bitwise not register A.
-017 XOR ---   Sets register C to register A bitwise xor register B.
-018 STP ---   Stops execution.
+010 ADC ---   Sets register C to register A + register B, and sets the carry flag accordingly.
+011 SBC ---   Sets register C to register A - register B, and sets the carry flag accordingly.
+012 INA ---   Sets register C to register A incremented by 1.
+013 DCA ---   Sets register C to register A decremented by 1.
+014 SLA ---   Sets register C to register A shifted left by 1.
+015 SRA ---   Sets register C to register A shifted right by 1.
+016 RLA ---   Sets register C to register A shifted left by 1, and sets the carry flag accordingly.
+017 RRA ---   Sets register C to register A shifyed right by 1, and sets the carry flag accordingly.
+018 AND ---   Stes register C to register A bitwise and register B.
+019 ORR ---   Sets register C to register A bitwise or register B.
+020 NOT ---   Sets register C to bitwise not register A.
+021 XOR ---   Sets register C to register A bitwise xor register B.
+022 SCA ---   Sets the carry flag.
+023 RCA ---   Resets the carry flag.
+024 STP ---   Stops execution.
 
 128 STA num   Sets register A to "num".
 129 STB num   Sets register B to "num".
@@ -111,14 +117,20 @@ MDA:  Move D to A (or move D A)
 MDB:  Move D to B (or move D B)
 ADD:  Add
 SUB:  Subtract
+ADC:  Add and set carry (or add and carry or add carry)
+SBC:  Subtract and set carry (or subtract and carry or subtract carry)
 INA:  Increment A (or increment)
 DCA:  Decrement A (or decrement)
 SLA:  Shift left A (or shift left)
 SRA:  Shift right A (or shift right)
+RLA:  Rotate left A (or rotate left)
+RRA:  Rotate right A (or rotate right)
 AND:  And
 ORR:  Or
 NOT:  Not
 XOR:  X-or
+SCA:  Set carry
+RCA:  Reset carry
 STP:  Stop
 
 STA:  Store A
@@ -169,15 +181,21 @@ instructions that take 2 bytes have a one as the last digit.
 007 MDB
 008 ADD
 009 SUB
-010 INA
-011 DCA
-012 SLA
-013 SRA
-014 AND
-015 ORR
-016 NOT
-017 XOR
-018 STP
+010 ADC
+011 SBC
+012 INA
+013 DCA
+014 SLA
+015 SRA
+016 RLA
+017 RRA
+018 AND
+019 ORR
+020 NOT
+021 XOR
+022 SCA
+023 RCA
+024 STP
 
 
 
