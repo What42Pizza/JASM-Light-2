@@ -25,12 +25,12 @@ Code:
 
 
 Label JSR_JumpLowBit = 16
-
 Label JSR_JumpHighBit = 14
+
 Label JSR_ReturnLowBit1 = 07
 Label JSR_ReturnHighBit1 = 09
-Label JSR_ReturnLowBit2 = 24
-Label JSR_ReturnHighBit2 = 28
+Label JSR_ReturnLowBit2 = 25
+Label JSR_ReturnHighBit2 = 29
 
 Label JSR_ReturnsLow = 128
 Label JSR_ReturnsHigh = 129
@@ -40,10 +40,10 @@ Label JSR
 -- This writes the return address then updates the positions
 
 04 WTD JSR_JumpHighBit
-06 WTA JSR_ReturnsLow
+06 WTA JSR_ReturnsLow     -- Schrödinger's values: bytes 07 and 09 are used as both code and data at the same time
 08 WTB JSR_ReturnsHigh
 
-0A RDA JSR_ReturnHighBit1 -- Take high bit
+0A RDA JSR_ReturnHighBit1 -- Take high bit               -- Inc bytes 07 and 09 by 2
 0C INA
 0D WTC JSR_ReturnLowBit1 -- Set low bit to inc high bit
 0F MCA
@@ -56,15 +56,15 @@ Label JSR
 Label RET
 -- This updates the positions then retrieves the return address
 
-16 RDA JSR_ReturnLowBit1 -- Take low bit
-18 DCA
-19 WTC JSR_ReturnHighBit1 -- Set high bit to dec low bit
-1B WTC JSR_ReturnHighBit2
-1D MCA
-1E DCA
-1F WTC JSR_ReturnLowBit1 -- Set Low bit to dec high bit
-21 WTC JSR_RetrunLowBit2 -- If there was a pipeline, a nop might be needed after this instr
-23 RDA 00 -- Retrieve low bit
-25 WTA +4
-27 RDD 00 -- Retrieve high bit
-29 JMP 00
+17 RDA JSR_ReturnLowBit1 -- Take low bit
+19 DCA
+1A WTC JSR_ReturnHighBit1 -- Set high bit to dec low bit
+1C WTC JSR_ReturnHighBit2
+1E MCA
+1F DCA
+20 WTC JSR_RetrunLowBit2 -- Set Low bit to dec high bit    -- LowBit2 is before LowBit1 just in case this is run on a CPU with a pipeline
+22 WTC JSR_ReturnLowBit1
+24 RDA 00 -- Retrieve low bit
+26 WTA +4
+28 RDD 00 -- Retrieve high bit
+2A JMP 00
