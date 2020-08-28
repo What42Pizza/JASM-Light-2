@@ -13,15 +13,23 @@ JASM Light 16 3 Instruction set
 007 MDB ---   Moves data register 2 to register B.
 008 ADD ---   Sets register C to register A + register B.
 009 SUB ---   Sets register C to register A - register B.
-010 INA ---   Sets register C to register A incremented by 1.
-011 DCA ---   Sets register C to register A decremented by 1.
-012 SLA ---   Sets register C to register A shifted left by 1.
-013 SRA ---   Sets register C to register A shifted right by 1.
-014 AND ---   Stes register C to register A bitwise and register B.
-015 ORR ---   Sets register C to register A bitwise or register B.
-016 NOT ---   Sets register C to bitwise not register A.
-017 XOR ---   Sets register C to register A bitwise xor register B.
-018 STP ---   Stops execution.
+010 ADC ---   Sets register C to register A + register B, and sets the carry flag accordingly.
+011 SBC ---   Sets register C to register A - register B, and sets the carry flag accordingly.
+012 INA ---   Sets register C to register A incremented by 1.
+013 DCA ---   Sets register C to register A decremented by 1.
+014 SLA ---   Sets register C to register A shifted left by 1.
+015 SRA ---   Sets register C to register A shifted right by 1.
+016 SLC ---   Sets register C to register A shifted left by 1, and sets the carry flag accordingly.
+017 SRC ---   Sets register C to register A shifted right by 1, and sets the carry flag accordingly.
+018 RLA ---   Sets register C to register A rotated left by 1. This will also set the carry flag accordingly.
+019 RRA ---   Sets register C to register A rotated right by 1. This will also set the carry flag accordingly.
+020 AND ---   Stes register C to register A bitwise and register B.
+021 ORR ---   Sets register C to register A bitwise or register B.
+022 NOT ---   Sets register C to bitwise not register A.
+023 XOR ---   Sets register C to register A bitwise xor register B.
+024 SCA ---   Sets the carry flag.
+025 RCA ---   Resets the carry flag.
+026 STP ---   Stops execution.
 
 128 STA num   Sets register A to "num".
 129 STB num   Sets register B to "num".
@@ -49,3 +57,29 @@ JASM Light 16 3 Instruction set
 150 JPO add   Jumps to "add" using one data register.
 
 0b11------ JMPC add Jumps to "add" using conditions.
+
+
+
+Conditional jumps data:
+
+All bits:
+1 Required
+1 Required
+- Num of data registers (0: 1 reg, 1: both regs)
+- Condition inverted (0: no, 1: yes)
+- Condition type bit 3
+- Condition type bit 2
+- Condition type bit 1
+- Condition type bit 0
+
+Lowest 4 bits (define condition):
+0: Jump if A == B
+1: Jump if A > B
+2: Jump if A < B
+3: Jump if A = 0
+4: Jump if C = 0
+5: Jump if addition overflow
+6: Jump if subtraction underflow
+7: Jump if shift overflow
+8: Jump if shift underflow
+9: Jump if carry flag set

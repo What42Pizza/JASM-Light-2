@@ -88,6 +88,7 @@ Lowest 4 bits:
 6: Jump if subtraction underflow
 7: Jump if shift overflow
 8: Jump if shift underflow
+9: Jump if carry flag set
 
 
 All bits:
