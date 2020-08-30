@@ -1,0 +1,117 @@
+General Computer Modularity Protocols v1.0.0
+Started 08/29/20
+
+This is a set of instructions and protocols meant for modular computer systems, especially ones that run JASM.
+
+
+
+Information about all the peripherals on a computer system are stored in bytes 0x0100-0x01FF (256 byrtes range). Each
+peripheral takes 2 bytes, which specifies how many bytes that peripheral is requesting. This means there is a maximum
+of 128 peripherals. To stop two peripherals from reserving the same 2 bytes, each one will have a specific id given to
+it when the system is built. Attempting to Write to these bytes will tell the peripheral where it will be located in
+the memory map. The first byte returned from the peripheral (once the location has been specified) will tell the
+computer what type of peripheral it is, as determined by the peripheral types table. Additional bytes will specify
+other things required by the computer, and the amount of additional data is determined by the peripheral's type. Most
+of the additional data will be read only, but it could also be writable, depending on the peripheral. It is also
+possible (and usually required for GPUs) to appear to the system as multiple peripherals (such as a GPU and VRAM).
+
+
+
+
+
+
+
+
+
+
+Peripheral types table:
+
+0: null; does not exist (0  additional bytes of data)
+1: RAM                  (4  additional bytes of data)
+2: ROM                  (4  additional bytes of data)
+3: VRAM                 (4  additional bytes of data)
+4: GPU                  (8  additional bytes of data)
+5: IO controller        (1  additional byte  of data)
+6: Calculator           (10 additional bytes of data)
+
+
+
+
+
+Peripheral types' additional data: (all numbers start with 1 only because byte 0 specifies the peripheral type)
+
+
+
+null:
+no additional data required
+
+
+RAM:
+1: Size (low byte)
+2: Size (high byte)
+3: Location (low byte)
+4: Location (high byte)
+5: Highest read latency (in ticks; int)
+6: Highest write latency (in ticks; int)
+
+
+ROM:
+1: Size (low byte)
+2: Size (high byte)
+3: Location (low byte)
+4: Location (high byte)
+5: Highest read latency (in ticks; int)
+6: Highest write latency (in ticks; int)
+
+
+VRAM:
+1: Size (low byte)
+2: Size (high byte)
+3: Location (low byte)
+4: Location (high byte)
+5: Highest read latency (in ticks; int)
+6: Highest write latency (in ticks; int)
+
+
+GPU:
+1: GPU type
+2: Blanking data (when reading)
+   bit 0: F-Blank?
+   bit 1: H-Blank?
+   bit 2: V-Blank?
+2: Blanking data (when writing)
+   bit 0: F-Blank
+3: Screen width (low byte)
+4: Screen width (high byte)
+5: Screen height (low byte)
+6: Screen height (high byte)
+7: H-Blank virtual width (addition to screen width)
+8: V-Blank virtual height (addition to screen height)
+
+
+IO controller: (needs updating)
+1: Input (when reading)
+1: Output (when writing)
+
+
+Calculator:
+1: Supported calculations
+   bit 0: can do multiplication?
+   bit 1: can do division?
+   bit 2: can do square?
+   bit 3: can do A^B?
+   bit 4: can do sqrt?
+2: In1 (writable)
+3: In2 (writable)
+4: Out
+5: Start calculation (writable)
+   1: multiplication
+   2: division
+   3: square
+   4: A^B
+   5: sqrt
+6: Highest multiplication latency (in ticks; int)
+7: Highest division latency (in ticks; int)
+8: Highest square latency (in ticks; int)
+9: Highest A^B latency (in ticks; int)
+10: Highest sqrt latency (in ticks; int)
