@@ -1,11 +1,12 @@
-General Computer Modularity Protocols v1.0.0
+General Computer Modularity Protocols v1.1.0
 Started 08/29/20
+Last worked on 08/30/20
 
 This is a set of instructions and protocols meant for modular computer systems, especially ones that run JASM.
 
 
 
-Information about all the peripherals on a computer system are stored in bytes 0x0100-0x01FF (256 byrtes range). Each
+Information about all the peripherals on a computer system are stored in bytes 0x0100-0x01FF (256 bytes range). Each
 peripheral takes 2 bytes, which specifies how many bytes that peripheral is requesting. This means there is a maximum
 of 128 peripherals. To stop two peripherals from reserving the same 2 bytes, each one will have a specific id given to
 it when the system is built. Attempting to Write to these bytes will tell the peripheral where it will be located in
@@ -30,8 +31,8 @@ Peripheral types table:
 1: RAM                  (4  additional bytes of data)
 2: ROM                  (4  additional bytes of data)
 3: VRAM                 (4  additional bytes of data)
-4: GPU                  (8  additional bytes of data)
-5: IO controller        (1  additional byte  of data)
+4: GPU                  (13 additional bytes of data)
+5: IO controller        (2  additional bytes of data)
 6: Calculator           (10 additional bytes of data)
 
 
@@ -73,45 +74,79 @@ VRAM:
 6: Highest write latency (in ticks; int)
 
 
+
 GPU:
+
 1: GPU type
-2: Blanking data (when reading)
-   bit 0: F-Blank?
-   bit 1: H-Blank?
-   bit 2: V-Blank?
-2: Blanking data (when writing)
-   bit 0: F-Blank
-3: Screen width (low byte)
-4: Screen width (high byte)
-5: Screen height (low byte)
-6: Screen height (high byte)
-7: H-Blank virtual width (addition to screen width)
-8: V-Blank virtual height (addition to screen height)
+
+2: Supported modes (when reading)
+    bit 0: B/W bitmap mode?
+    bit 1: color bitmap mode?
+    bit 2: B/W characer mode?
+    bit 3: color character mode?
+2: Set mode (when writing)
+    1: B/W bitmap mode
+    2: color bitmap mode
+    3: B/W character mode
+    4: color character mode
+
+3: Blanking data (when reading)
+    bit 0: F-Blank?
+    bit 1: H-Blank?
+    bit 2: V-Blank?
+3: Blanking data (when writing)
+    bit 0: F-Blank
+
+4: Screen width (low byte)
+5: Screen width (high byte)
+6: Screen height (low byte)
+7: Screen height (high byte)
+8: H-Blank virtual width (addition to screen width)
+9: V-Blank virtual height (addition to screen height)
+
+10: H-Resolution (low byte in bitmap M, char width in char M)
+11: H-Resolution (high byte in bitmap M, chars/screen in char M)
+12: V-Resolution (low byte in bitmap M, char height in char M)
+13: V-Resolution (high byte in bitmap M, chars/screen in char M)
 
 
-IO controller: (needs updating)
-1: Input (when reading)
-1: Output (when writing)
+
+IO controller:
+1: Input type (when reading)
+    0: null (not connected)
+    1: system controls
+    2: keyboard (ascii encoding)
+    3: mouse
+    4: display
+1: Update IO (when writing)
+    0: null (unknown command)
+    1: update
+2: Input (when reading)
+2: Output (when writing)
+
 
 
 Calculator:
+
 1: Supported calculations
-   bit 0: can do multiplication?
-   bit 1: can do division?
-   bit 2: can do square?
-   bit 3: can do A^B?
-   bit 4: can do sqrt?
+    bit 0: can do multiplication?
+    bit 1: can do division?
+    bit 2: can do square?
+    bit 3: can do A^B?
+    bit 4: can do sqrt?
+
 2: In1 (writable)
 3: In2 (writable)
 4: Out
 5: Start calculation (writable)
-   1: multiplication
-   2: division
-   3: square
-   4: A^B
-   5: sqrt
-6: Highest multiplication latency (in ticks; int)
-7: Highest division latency (in ticks; int)
-8: Highest square latency (in ticks; int)
-9: Highest A^B latency (in ticks; int)
+    1: multiplication
+    2: division
+    3: square
+    4: A^B
+    5: sqrt
+
+6:  Highest multiplication latency (in ticks; int)
+7:  Highest division latency (in ticks; int)
+8:  Highest square latency (in ticks; int)
+9:  Highest A^B latency (in ticks; int)
 10: Highest sqrt latency (in ticks; int)
