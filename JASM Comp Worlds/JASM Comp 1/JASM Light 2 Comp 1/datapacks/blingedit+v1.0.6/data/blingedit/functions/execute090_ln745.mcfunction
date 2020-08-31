@@ -1,0 +1,9 @@
+execute if score @s edit_xmin matches 1.. run function blingedit:execute081_ln746
+execute if score @s edit_ymin matches 1.. run function blingedit:execute082_ln747
+execute if score @s edit_zmin matches 1.. run function blingedit:execute083_ln748
+execute if score @s edit_xmax matches 1.. run function blingedit:execute084_ln749
+execute if score @s edit_ymax matches 1.. run function blingedit:execute085_ln750
+execute if score @s edit_zmax matches 1.. run function blingedit:execute086_ln751
+execute if score @s center_x matches 1.. run function blingedit:execute087_ln752
+execute if score @s center_y matches 1.. run function blingedit:execute088_ln753
+execute if score @s center_z matches 1.. run function blingedit:execute089_ln754

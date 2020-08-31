@@ -1,0 +1,1 @@
+execute as @e[type=minecraft:magma_cube,tag=Corner] if score @s player = Global player if score @s type = Global type run function blingedit:execute144_ln1226

@@ -1,0 +1,2 @@
+execute unless score @s has_rand matches 1.. run tellraw @s ["",{"text":"You haven't selected a region for a random block pool yet."}]
+execute if score @s has_rand matches 1.. run function blingedit:execute070_ln542
