@@ -1,4 +1,0 @@
-scoreboard players set @s raycast_select 0
-scoreboard players set Global handled 1
-tellraw @s ["",{"text":"Changed selection to: "},{"text":"Floating Cursor","color":"yellow"}]
-tellraw @s ["",{"text":"Options: "},{"text":"[Range 5]","clickEvent":{"action":"run_command","value":"/function blingedit:cursor_range_5"},"color":"gold"},{"text":" ","color":"gold"},{"text":"[Range 10]","clickEvent":{"action":"run_command","value":"/function blingedit:cursor_range_10"},"color":"gold"},{"text":" ","color":"gold"},{"text":"[Range 15]","clickEvent":{"action":"run_command","value":"/function blingedit:cursor_range_15"},"color":"gold"},{"text":" ","color":"gold"},{"text":"[Range 20]","clickEvent":{"action":"run_command","value":"/function blingedit:cursor_range_20"},"color":"gold"}]
