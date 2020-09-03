@@ -1,0 +1,13 @@
+This is the color scheme for JASM Comp 3.
+Created 09/03/20
+
+
+White:      External IO (user interface)
+Light gray: Internal IO (JDI)
+Light blue: ALU
+Blue:       ALU registers
+Yellow:     control busses and registers
+Orange:     control wires
+Red:        micro-code
+Green:      main busses
+Magenta:    RAM
