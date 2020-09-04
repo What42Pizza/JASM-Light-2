@@ -1,7 +1,7 @@
 JASM Light 16 3
 
 Started: 05/15/19
-Last worked on: 08/28/20
+Last worked on: 09/04/20
 
 
 This is like JASM Light Extended, but with 16 bits. Instead of having a single 8 bit data register to hold the
@@ -12,58 +12,61 @@ instruction data, there are 2x8 bit data registers. This means the computer, whi
 
 Instructions:
 
-000 NOP ---   No operation.
-001 MCA ---   Moves register C to register A.
-002 MCB ---   Moves register C to register B.
-003 MAD ---   Moves register A to data register 2.
-004 MBD ---   Moves register B to data register 2.
-005 MCD ---   Moves register C to data register 2.
-006 MDA ---   Moves data register 2 to register A.
-007 MDB ---   Moves data register 2 to register B.
-008 ADD ---   Sets register C to register A + register B.
-009 SUB ---   Sets register C to register A - register B.
-010 ADC ---   Sets register C to register A + register B, and sets the carry flag accordingly.
-011 SBC ---   Sets register C to register A - register B, and sets the carry flag accordingly.
-012 INA ---   Sets register C to register A incremented by 1.
-013 DCA ---   Sets register C to register A decremented by 1.
-014 SLA ---   Sets register C to register A shifted left by 1.
-015 SRA ---   Sets register C to register A shifted right by 1.
-016 SLC ---   Sets register C to register A shifted left by 1, and sets the carry flag accordingly.
-017 SRC ---   Sets register C to register A shifted right by 1, and sets the carry flag accordingly.
-018 RLA ---   Sets register C to register A rotated left by 1. This will also set the carry flag accordingly.
-019 RRA ---   Sets register C to register A rotated right by 1. This will also set the carry flag accordingly.
-020 AND ---   Stes register C to register A bitwise and register B.
-021 ORR ---   Sets register C to register A bitwise or register B.
-022 NOT ---   Sets register C to bitwise not register A.
-023 XOR ---   Sets register C to register A bitwise xor register B.
-024 SCA ---   Sets the carry flag.
-025 RCA ---   Resets the carry flag.
-026 STP ---   Stops execution.
+hx dec
+00 000 NOP  ---   No operation.
+01 001 MCA  ---   Moves register C to register A.
+02 002 MCB  ---   Moves register C to register B.
+03 003 MAD  ---   Moves register A to data register 2.
+04 004 MBD  ---   Moves register B to data register 2.
+05 005 MCD  ---   Moves register C to data register 2.
+06 006 MDA  ---   Moves data register 2 to register A.
+07 007 MDB  ---   Moves data register 2 to register B.
+08 008 MCBA ---   Moves register C to register A and register A to register B (A -> B is before C -> A)
+09 009 MCAB ---   Moves register C to register B and register B to register A (B -> A is before C -> B)
+0A 010 ADD  ---   Sets register C to register A + register B.
+0B 011 SUB  ---   Sets register C to register A - register B.
+0C 012 ADC  ---   Sets register C to register A + register B, and sets the carry flag accordingly.
+0D 013 SBC  ---   Sets register C to register A - register B, and sets the carry flag accordingly.
+0E 014 INA  ---   Sets register C to register A incremented by 1.
+0F 015 DCA  ---   Sets register C to register A decremented by 1.
+10 016 SLA  ---   Sets register C to register A shifted left by 1.
+11 017 SRA  ---   Sets register C to register A shifted right by 1.
+12 018 SLC  ---   Sets register C to register A shifted left by 1, and sets the carry flag accordingly.
+13 019 SRC  ---   Sets register C to register A shifted right by 1, and sets the carry flag accordingly.
+14 020 RLA  ---   Sets register C to register A rotated left by 1. This will also set the carry flag accordingly.
+15 021 RRA  ---   Sets register C to register A rotated right by 1. This will also set the carry flag accordingly.
+16 022 AND  ---   Stes register C to register A bitwise and register B.
+17 023 ORR  ---   Sets register C to register A bitwise or register B.
+18 024 NOT  ---   Sets register C to bitwise not register A.
+19 025 XOR  ---   Sets register C to register A bitwise xor register B.
+1A 026 SCA  ---   Sets the carry flag.
+1B 027 RCA  ---   Resets the carry flag.
+1C 028 STP  ---   Stops execution.
 
-128 STA num   Sets register A to "num".
-129 STB num   Sets register B to "num".
-130 STD num   Sets data register 2 to "num
-131 RDA add   Reads from memory "add" to register A.
-132 RDB add   Reads from memory "add" to register B.
-133 RDD add   Reads from memory "add" to data register 2.
-134 RAB add   Reads from memory "add" to register A using both data registers.
-135 RBB add   Reads from memory "add" to register B using both data registers.
-136 WTA add   Writes register A to memory "add".
-137 WTB add   Writes register B to memory "add".
-138 WTC add   Writes register C to memory "add".
-139 WTD add   Writes data register 2 to memory "add".
-140 WAB add   Writes register A to memory "add" using both data registers.
-141 WBB add   Writes register B to memory "add" using both data registers.
-142 WCB add   Writes register C to memory "add" using both data registers.
-143 CRA add   Read from cache "add" to register A.
-144 CRB add   Read from cache "add" to register B.
-145 CRD add   Read from cache "add" to register data register 2.
-146 CWA add   Writes register A to cache "add".
-147 CWB add   Writes register B to cache "add".
-148 CWC add   Writes register C to cache "add".
-149 CWD add   Writes register data register 2 to cache "add".
-182 JMP add   Jumps to "add".
-150 JPO add   Jumps to "add" using one data register.
+80 128 STA  num   Sets register A to "num".
+81 129 STB  num   Sets register B to "num".
+82 130 STD  num   Sets data register 2 to "num
+83 131 RDA  add   Reads from memory "add" to register A.
+84 132 RDB  add   Reads from memory "add" to register B.
+85 133 RDD  add   Reads from memory "add" to data register 2.
+86 134 RAB  add   Reads from memory "add" to register A using both data registers.
+87 135 RBB  add   Reads from memory "add" to register B using both data registers.
+88 136 WTA  add   Writes register A to memory "add".
+89 137 WTB  add   Writes register B to memory "add".
+8A 138 WTC  add   Writes register C to memory "add".
+8B 139 WTD  add   Writes data register 2 to memory "add".
+8C 140 WAB  add   Writes register A to memory "add" using both data registers.
+8D 141 WBB  add   Writes register B to memory "add" using both data registers.
+8E 142 WCB  add   Writes register C to memory "add" using both data registers.
+8F 143 CRA  add   Read from cache "add" to register A.
+90 144 CRB  add   Read from cache "add" to register B.
+91 145 CRD  add   Read from cache "add" to register data register 2.
+92 146 CWA  add   Writes register A to cache "add".
+93 147 CWB  add   Writes register B to cache "add".
+94 148 CWC  add   Writes register C to cache "add".
+95 149 CWD  add   Writes register data register 2 to cache "add".
+A0 160 JMP  add   Jumps to "add" using both data registers. (this is 0b10100000 to that the 'use both registers bit' is set)
+96 150 JMPO add   Jumps to "add" using one data register.
 
 0b11------ JMPC add Jumps to "add" using conditions.
 
@@ -77,28 +80,26 @@ bit means both registers. The 4th bit (forth highest) inverts the condition. If 
 If it is 1, the condition is inverted. The lowest 4 bits determin the condition used.
 
 
-Lowest 4 bits:
+Lowest 4 bits: (defines condition)
 
 0: Jump if A == B
 1: Jump if A > B
 2: Jump if A < B
-3: Jump if A = 0
-4: Jump if C = 0
+3: Jump if A == 0
+4: Jump if C == 0
 5: Jump if addition overflow
 6: Jump if subtraction underflow
-7: Jump if shift overflow
-8: Jump if shift underflow
+7: Jump if shift overflow (from shift left)
+8: Jump if shift underflow (from shift right)
 9: Jump if carry flag set
 
 
 All bits:
 
-0
-b
-1 Required
-1 Required
+1 Required (2 byte instr)
+1 Required (conditional jump)
 - Num of data registers (0: 1 reg, 1: both regs)
-- Inverted (0: no, 1: yes)
+- Invert condition (0: no, 1: yes)
 - Condition type bit 3
 - Condition type bit 2
 - Condition type bit 1
@@ -118,6 +119,8 @@ MAD:  Move A to D (or move A D)
 MBD:  Move B to D (or move B D)
 MDA:  Move D to A (or move D A)
 MDB:  Move D to B (or move D B)
+MCBA: Move C to B to A (or move C B A)
+MCAB: Move C to A to B (or move C A B)
 ADD:  Add
 SUB:  Subtract
 ADC:  Add and set carry (or add and carry or add, carry)
@@ -161,7 +164,7 @@ CWB:  Cache write B
 CWC:  Cache write C
 CWD:  Cache write D
 JMP:  Jump
-JPO:  Jump with one byte (or jump one, or B-jump ((single) byte jump))
+JMPO: Jump with one byte (or jump one, or B-jump ((single) byte jump))
 JMPC: Jump conditional
 
 
@@ -176,59 +179,64 @@ instructions that take 2 bytes have a one as the last digit.
 
 1 byte instructions:
 
-000 NOP
-001 MCA
-002 MCB
-003 MCD
-004 MAD
-005 MBD
-006 MDA
-007 MDB
-008 ADD
-009 SUB
-010 ADC
-011 SBC
-012 INA
-013 DCA
-014 SLA
-015 SRA
-016 SLC
-017 SRC
-018 RLA
-019 RRA
-020 AND
-021 ORR
-022 NOT
-023 XOR
-024 SCA
-025 RCA
-026 STP
+hx dec
+00 000 NOP
+01 001 MCA
+02 002 MCB
+03 003 MCD
+04 004 MAD
+05 005 MBD
+06 006 MDA
+07 007 MDB
+08 008 MCBA
+09 009 MCAB
+0A 010 ADD
+0B 011 SUB
+0C 012 ADC
+0D 013 SBC
+0E 014 INA
+0F 015 DCA
+10 016 SLA
+11 017 SRA
+12 018 SLC
+13 019 SRC
+14 020 RLA
+15 021 RRA
+16 022 AND
+17 023 ORR
+18 024 NOT
+19 025 XOR
+1A 026 SCA
+1B 027 RCA
+1C 028 STP
 
 
 
 2 byte instructions:
 
-128 STA
-129 STB
-130 STD
-131 RDA
-132 RDB
-133 RDD
-134 RAB
-135 RBB
-136 WTA
-137 WTB
-138 WTC
-139 WTD
-140 WAB
-141 WBB
-142 WCB
-143 CRA
-144 CRB
-145 CRD
-146 CWA
-147 CWB
-148 CWC
-149 CWD
-182 JMP
-150 JPO
+hx dec
+80 128 STA
+81 129 STB
+82 130 STD
+83 131 RDA
+84 132 RDB
+85 133 RDD
+86 134 RAB
+87 135 RBB
+88 136 WTA
+89 137 WTB
+8A 138 WTC
+8B 139 WTD
+8C 140 WAB
+8D 141 WBB
+8E 142 WCB
+8F 143 CRA
+90 144 CRB
+91 145 CRD
+92 146 CWA
+93 147 CWB
+94 148 CWC
+95 149 CWD
+A0 160 JMP
+96 150 JMPO
+0b11------ JMPC
