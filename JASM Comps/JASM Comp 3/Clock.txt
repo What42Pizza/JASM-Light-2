@@ -1,0 +1,38 @@
+This is how the clock in JASM Comp 3 will work.
+Created 09/04/20
+
+
+
+First off, the 'clock' will just be a signal that propagates through different components to control the CPU.
+
+
+
+Load byte 1:
+1: Send PC to JDI Address.
+2: Set JDI continue point to 'Finish byte 1'.
+3: Activate JDI Read.
+
+Finish byte 1:
+1: Send JDI Data to Instruction Register.
+2: See if Instruction Register's bit 7 is on.
+If it is: Go to 'Load byte 2'
+If it isn't: Go to 'Execute instruction'
+
+Load byte 2:
+1: Increment PC.
+2: Send PC to JDI Address.
+3: Set JDI continue point to 'Finish byte 2'.
+4: Activate JDI Read.
+
+Finish byte 2:
+1: Send JDI Data to Data Register 1.
+2: Go to 'Execute instruction'.
+
+Execute instruction:
+1: Set JDI continue point to 'return to opcode'.
+2: Activate Decoder. (execute instruction; opcode will return to 'Finish instruction')
+
+Finish instruction:
+1: If Block Inc Flag isn't set, increment PC.
+2: Reset Block Inc Flag.
+3: If Stop Flag isn't set, go to 'Load byte 1'.
