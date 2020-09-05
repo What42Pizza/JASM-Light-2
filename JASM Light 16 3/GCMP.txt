@@ -134,6 +134,7 @@ Calculator:
     bit 2: can do square?
     bit 3: can do A^B?
     bit 4: can do sqrt?
+    bit 5: can do bin <-> BCD?
 
 2: In1 (writable)
 3: In2 (writable)
@@ -144,6 +145,9 @@ Calculator:
     3: square
     4: A^B
     5: sqrt
+    6: bin -> BCD
+    7: BCD -> bin
+6...: Clac IO (This is used for things like bin <-> BDC)
 
 6:  Highest multiplication latency (in ticks; int)
 7:  Highest division latency (in ticks; int)
