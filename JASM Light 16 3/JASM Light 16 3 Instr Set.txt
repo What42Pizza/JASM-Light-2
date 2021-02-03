@@ -67,8 +67,7 @@ hx dec
 95 149 CWD  add   Writes register data register 2 to cache "add".
 A0 160 JMP  add   Jumps to "add" using both data registers. (this is 0b10100000 to that the 'use both registers bit' is set)
 96 150 JMPO add   Jumps to "add" using one data register.
-
-0b11------ JMPC add Jumps to "add" using conditions.
+0b11------ JMPC add   Jumps to "add" if condition is met. (see below)
 
 
 
@@ -86,12 +85,13 @@ Lowest 4 bits: (defines condition)
 1: Jump if A > B
 2: Jump if A < B
 3: Jump if A == 0
-4: Jump if C == 0
-5: Jump if addition overflow
-6: Jump if subtraction underflow
-7: Jump if shift overflow (from shift left)
-8: Jump if shift underflow (from shift right)
-9: Jump if carry flag set
+4: Jump if B == 0
+5: Jump if C == 0
+6: Jump if addition overflow
+7: Jump if subtraction underflow
+8: Jump if shift overflow (from shift left)
+9: Jump if shift underflow (from shift right)
+10: Jump if carry flag set
 
 
 All bits:

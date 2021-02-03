@@ -1,6 +1,8 @@
 Division algorithm
 Started 08/31/20
 
+(I don't think this is finished)
+
 
 
 00 STA DIVEDEND
