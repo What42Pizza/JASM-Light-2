@@ -87,11 +87,7 @@ Lowest 4 bits: (defines condition)
 3: Jump if A == 0
 4: Jump if B == 0
 5: Jump if C == 0
-6: Jump if addition overflow
-7: Jump if subtraction underflow
-8: Jump if shift overflow (from shift left)
-9: Jump if shift underflow (from shift right)
-10: Jump if carry flag set
+6: Jump if carry flag set
 
 
 All bits:
