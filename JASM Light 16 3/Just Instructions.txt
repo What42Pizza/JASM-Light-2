@@ -1,5 +1,5 @@
 JASM Light 16 3 Instruction set
-Last updated 09/04/20
+Last updated 04/01/21
 
 
 
@@ -30,8 +30,11 @@ hx dec
 17 023 ORR  ---   Sets register C to register A bitwise or register B.
 18 024 NOT  ---   Sets register C to bitwise not register A.
 19 025 XOR  ---   Sets register C to register A bitwise xor register B.
-1A 026 SCA  ---   Sets the carry flag.
-1B 027 RCA  ---   Resets the carry flag.
+1A 026 STC  ---   Sets the carry flag.
+1B 027 RSC  ---   Resets the carry flag.
+1C 028 RCA  ---   Moves the carry bit to ALU A.
+1D 029 RCB  ---   Moves the carry bit to ALU B.
+1E 030 RCC  ---   Moves the carry bit to ALU C.
 1C 028 STP  ---   Stops execution.
 
 80 128 STA  num   Sets register A to "num".
