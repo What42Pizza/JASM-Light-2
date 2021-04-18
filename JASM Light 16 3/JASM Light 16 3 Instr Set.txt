@@ -1,19 +1,28 @@
 JASM Light 16 3
 
 Started: 05/15/19
-Last worked on: 09/04/20
+Last worked on: 04/18/21
 
 
 This is like JASM Light Extended, but with 16 bits. Instead of having a single 8 bit data register to hold the
-instruction data, there are 2x8 bit data registers. This means the computer, while stll being 8-bit, can still access
-64 kilobytes of memory / storage
+instruction data, there are 2x8 bit data registers. This means the computer, while stll being 8-bit, can access 64
+kilobytes of memory / storage.
+
+The idea behind this is that all the instructions that take 1 byte have a zero as the last digit and all the
+instructions that take 2 bytes have a one as the last digit.
+
+
 
 
 
 Instructions:
 
+
+-- nop
 hx dec
 00 000 NOP  ---   No operation.
+
+-- mov ops
 01 001 MCA  ---   Moves register C to register A.
 02 002 MCB  ---   Moves register C to register B.
 03 003 MAD  ---   Moves register A to data register 2.
@@ -23,34 +32,66 @@ hx dec
 07 007 MDB  ---   Moves data register 2 to register B.
 08 008 MCBA ---   Moves register C to register A and register A to register B (A -> B is before C -> A)
 09 009 MCAB ---   Moves register C to register B and register B to register A (B -> A is before C -> B)
-0A 010 ADD  ---   Sets register C to register A + register B.
-0B 011 SUB  ---   Sets register C to register A - register B.
-0C 012 ADC  ---   Sets register C to register A + register B, and sets the carry flag accordingly.
-0D 013 SBC  ---   Sets register C to register A - register B, and sets the carry flag accordingly.
-0E 014 INA  ---   Sets register C to register A incremented by 1.
-0F 015 DCA  ---   Sets register C to register A decremented by 1.
-10 016 SLA  ---   Sets register C to register A shifted left by 1.
-11 017 SRA  ---   Sets register C to register A shifted right by 1.
-12 018 SLC  ---   Sets register C to register A shifted left by 1, and sets the carry flag accordingly.
-13 019 SRC  ---   Sets register C to register A shifted right by 1, and sets the carry flag accordingly.
-14 020 RLA  ---   Sets register C to register A rotated left by 1. This will also set the carry flag accordingly.
-15 021 RRA  ---   Sets register C to register A rotated right by 1. This will also set the carry flag accordingly.
-16 022 AND  ---   Stes register C to register A bitwise and register B.
-17 023 ORR  ---   Sets register C to register A bitwise or register B.
-18 024 NOT  ---   Sets register C to bitwise not register A.
-19 025 XOR  ---   Sets register C to register A bitwise xor register B.
-1A 026 SCA  ---   Sets the carry flag.
-1B 027 RCA  ---   Resets the carry flag.
-1C 028 STP  ---   Stops execution.
 
+-- ALU add & sub
+0A 010 ADD  ---   Sets register C to register A + register B + the carry flag.                                      add carry: true  set carry: false
+0B 011 ADC  ---   Sets register C to register A + register B + the carry flag and sets the carry flag accordingly.  add carry: true  set carry: true
+0C 012 ADI  ---   Sets register C to register A + register B and ignores the carry flag.                            add carry: flase set carry: false
+0D 013 ADCI ---   Sets register C to register A + register B and ignores but sets the carry flag accordingly.       add carry: false set carry: true
+0E 014 SUB  ---   Sets register C to register A - register B + the carry flag.                                      add carry: true  set carry: false
+0F 015 SBC  ---   Sets register C to register A - register B + the carry flag and sets the carry flag accordingly.  add carry: true  set carry: true
+10 016 SBI  ---   Sets register C to register A - register B and ignores the carry flag.                            add carry: false set carry: false
+11 017 SBCI ---   Sets register C to register A - register B and ignores but sets the carry flag accordingly.       add carry: false set carry: true
+
+-- ALU inc & dec
+12 018 INA  ---   Sets register C to register A incremented by 1.
+13 019 DCA  ---   Sets register C to register A decremented by 1.
+
+-- ALU shifting
+14 020 SLA  ---   Sets register C to register A shifted left by 1 + the carry flag.                                                           add carry: true  set carry: false
+16 022 SLC  ---   Sets register C to register A shifted left by 1 + the carry flag and sets the carry flag accordingly.                       add carry: true  set carry: true
+17 023 SLI  ---   Sets register C to register A shifted left by 1 and ignores the carry flag.                                                 add carry: false set carry: false
+18 024 SLCI ---   Sets register C to register A shifted left by 1 and ignores but sets the cary flag accordingly.                             add carry: false set carry: true
+19 025 SRA  ---   Sets register C to register A shifted right by 1 + the carry flag (added to far left).                                      add carry: true  set carry: false
+1A 026 SRC  ---   Sets register C to register A shifted right by 1 + the carry flag (added to far left) and sets the carry flag accordingly.  add carry: true  set carry: true
+1B 027 SRI  ---   Sets register C to register A shifted right by 1 and ignores the carry flag.                                                add carry: false set carry: false
+1C 028 SRCI ---   Sets register C to register A shifted right by 1 and ignores but sets the carry flag accordingly.                           add carry: false set carry: true
+
+-- ALU rotating
+1D 029 RAL  ---   Sets register C to register A rotated left by 1.
+1E 030 RLC  ---   Sets register C to register A rotated left by 1 and sets the carry flag accordingly.
+1F 031 RAR  ---   Sets register C to register A rotated right by 1.
+20 032 RRC  ---   Sets register C to register A rotated right by 1 and sets the carry flag accordingly.
+
+-- ALU bitwise
+1A 026 AND  ---   Stes register C to register A bitwise and register B.
+1B 027 ORR  ---   Sets register C to register A bitwise or register B.
+1C 028 NOT  ---   Sets register C to bitwise not register A.
+1D 029 XOR  ---   Sets register C to register A bitwise xor register B.
+
+-- misc
+1E 030 SCA  ---   Sets the carry flag.
+1F 031 RCA  ---   Resets the carry flag.
+20 032 STP  ---   Stops execution.
+
+
+
+2 byte instructions:
+
+-- store
+hx dec
 80 128 STA  num   Sets register A to "num".
 81 129 STB  num   Sets register B to "num".
 82 130 STD  num   Sets data register 2 to "num
+
+-- memory read
 83 131 RDA  add   Reads from memory "add" to register A.
 84 132 RDB  add   Reads from memory "add" to register B.
 85 133 RDD  add   Reads from memory "add" to data register 2.
 86 134 RAB  add   Reads from memory "add" to register A using both data registers.
 87 135 RBB  add   Reads from memory "add" to register B using both data registers.
+
+-- memory write
 88 136 WTA  add   Writes register A to memory "add".
 89 137 WTB  add   Writes register B to memory "add".
 8A 138 WTC  add   Writes register C to memory "add".
@@ -58,6 +99,8 @@ hx dec
 8C 140 WAB  add   Writes register A to memory "add" using both data registers.
 8D 141 WBB  add   Writes register B to memory "add" using both data registers.
 8E 142 WCB  add   Writes register C to memory "add" using both data registers.
+
+-- cache read & write
 8F 143 CRA  add   Read from cache "add" to register A.
 90 144 CRB  add   Read from cache "add" to register B.
 91 145 CRD  add   Read from cache "add" to register data register 2.
@@ -65,9 +108,18 @@ hx dec
 93 147 CWB  add   Writes register B to cache "add".
 94 148 CWC  add   Writes register C to cache "add".
 95 149 CWD  add   Writes register data register 2 to cache "add".
+
+-- jumps
 A0 160 JMP  add   Jumps to "add" using both data registers. (this is 0b10100000 to that the 'use both registers bit' is set)
 96 150 JMPO add   Jumps to "add" using one data register.
 0b11------ JMPC add   Jumps to "add" if condition is met. (see below)
+
+
+
+
+
+
+
 
 
 
@@ -109,46 +161,74 @@ All bits:
 
 
 
+
+
+
+
+
 Names:
 
 NOP:  No operation
-MCA:  Move C to A (or move C A)
-MCB:  Move C to B (or move C B)
-MCD:  Move C to D (or move C D)
-MAD:  Move A to D (or move A D)
-MBD:  Move B to D (or move B D)
-MDA:  Move D to A (or move D A)
-MDB:  Move D to B (or move D B)
+
+MCA:  Move C to A ---- (or move C A)
+MCB:  Move C to B      (or move C B)
+MCD:  Move C to D ---- (or move C D)
+MAD:  Move A to D      (or move A D)
+MBD:  Move B to D ---- (or move B D)
+MDA:  Move D to A      (or move D A)
+MDB:  Move D to B ---- (or move D B)
 MCBA: Move C to B to A (or move C B A)
 MCAB: Move C to A to B (or move C A B)
+
 ADD:  Add
-SUB:  Subtract
-ADC:  Add and set carry (or add and carry or add, carry)
-SBC:  Subtract and set carry (or subtract and carry or subtract, carry)
+ADC:  Add and set carry --------------- (or add-c)
+ADI:  Add but ingore carry              (or add-ig)
+ADCI: Add but ignore and set carry ---- (or add-c-ig)
+SUB:  Subtract                          (or sub)
+SBC:  Subtract and set carry ---------- (or sub-c)
+SBI:  Subtract but ignore carry         (or sub-ig)
+SBCI: Subtract but ignore and set carry (or sub-c-ig)
+
 INA:  Increment A (or increment)
 DCA:  Decrement A (or decrement)
-SLA:  Shift left A (or shift left)
-SRA:  Shift right A (or shift right)
-SLC:  Shift left and carry (or shift right, carry)
-SRC:  Shift right and carry (or shift right, carry)
-RLA:  Rotate left A (or rotate left)
-RRA:  Rotate right A (or rotate right)
+
+SLA:  Shift left A ---------------- (or shift left)
+SLC:  Shift left and carry          (or shift right carry)
+SLI:  Shift left, ignore carry ---- (or shift left ignore)
+SLCI: Shift left, ignore set carry  (or shift left carry ignore)
+SRA:  Shift right A --------------- (or shift right)
+SRC:  Shift right and carry         (or shift right carry)
+SLI:  Shift right, ignore carry --- (or shift right ignore)
+SLCI: Shift right, ignore set carry (or shift right carry ignore)
+
+RAL:  Rotate A left ---------- (or rotate left)
+RLC:  Rotate A left and carry  (or rotate left carry)
+RAR:  Rotate A right --------- (or rotate right)
+RRC:  Rotate A right and carry (or rotate right carry)
+
 AND:  And
 ORR:  Or
 NOT:  Not
 XOR:  X-or
+
 SCA:  Set carry
 RCA:  Reset carry
 STP:  Stop
 
+
+
+
+
 STA:  Store A
 STB:  Store B
 STD:  Store D
+
 RDA:  Read A
 RDB:  Read B
 RDD:  Read D
 RAB:  Read A both
 RBB:  Read B both
+
 WTA:  Write A
 WTB:  Write B
 WTC:  Write C
@@ -156,6 +236,7 @@ WTD:  Write D
 WAB:  Write A both
 WBB:  Write B both
 WCB:  Write C both
+
 CRA:  Cache read A
 CRB:  Cache read B
 CRD:  Cache read D
@@ -163,80 +244,7 @@ CWA:  Cache write A
 CWB:  Cache write B
 CWC:  Cache write C
 CWD:  Cache write D
+
 JMP:  Jump
 JMPO: Jump with one byte (or jump one, or B-jump ((single) byte jump))
 JMPC: Jump conditional
-
-
-
-
-
-
-The idea behind this is that all the instructions that take 1 byte have a zero as the last digit and all the
-instructions that take 2 bytes have a one as the last digit.
-
-
-
-1 byte instructions:
-
-hx dec
-00 000 NOP
-01 001 MCA
-02 002 MCB
-03 003 MCD
-04 004 MAD
-05 005 MBD
-06 006 MDA
-07 007 MDB
-08 008 MCBA
-09 009 MCAB
-0A 010 ADD
-0B 011 SUB
-0C 012 ADC
-0D 013 SBC
-0E 014 INA
-0F 015 DCA
-10 016 SLA
-11 017 SRA
-12 018 SLC
-13 019 SRC
-14 020 RLA
-15 021 RRA
-16 022 AND
-17 023 ORR
-18 024 NOT
-19 025 XOR
-1A 026 SCA
-1B 027 RCA
-1C 028 STP
-
-
-
-2 byte instructions:
-
-hx dec
-80 128 STA
-81 129 STB
-82 130 STD
-83 131 RDA
-84 132 RDB
-85 133 RDD
-86 134 RAB
-87 135 RBB
-88 136 WTA
-89 137 WTB
-8A 138 WTC
-8B 139 WTD
-8C 140 WAB
-8D 141 WBB
-8E 142 WCB
-8F 143 CRA
-90 144 CRB
-91 145 CRD
-92 146 CWA
-93 147 CWB
-94 148 CWC
-95 149 CWD
-A0 160 JMP
-96 150 JMPO
-0b11------ JMPC
