@@ -148,7 +148,7 @@ All bits:
 1 Required (conditional jump)
 - Num of data registers (0: 1 reg, 1: both regs)
 - Invert condition (0: no, 1: yes)
-- Condition type bit 3
+- Condition type bit 3 (unused)
 - Condition type bit 2
 - Condition type bit 1
 - Condition type bit 0
